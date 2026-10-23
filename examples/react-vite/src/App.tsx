@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 import {
   WelkAccordion,
-  WelkAvatar,
   WelkBadge,
   WelkBreadCrumbs,
   WelkButton,
@@ -28,6 +27,7 @@ import {
 import { applySeo, getSeo } from "./seo";
 import { faqs, repository } from "./siteContent";
 import { Code } from "./code";
+import { Contributors } from "./Contributors";
 
 const pages = [
   { title: "Home", route: "/" },
@@ -321,52 +321,6 @@ function Components({ name }: { name?: string }) {
         </section>
       </div>
     </>
-  );
-}
-
-function Contributors() {
-  return (
-    <section className="section">
-      <WelkBadge variant="success">BUILT TOGETHER</WelkBadge>
-      <h1>The people behind the panels.</h1>
-      <p>Thank you to the contributors shaping WelkUI.</p>
-      <article className="surface contributor">
-        <WelkAvatar
-          alt="No0b-master"
-          src="https://avatars.githubusercontent.com/u/62955737?v=4"
-          size="md"
-        />
-        <div>
-          <div className="contributorName">
-            <h2>
-              <a href="https://github.com/No0b-master">No0b-master</a>
-            </h2>
-            <WelkBadge size="sm">Contributor</WelkBadge>
-          </div>
-          <p>4 repository contributions</p>
-        </div>
-      </article>
-      <p className="finePrint">
-        Verified from GitHub on October 23, 2026. This is a snapshot, not a live
-        ranking.{" "}
-        <a href={`${repository}/graphs/contributors`}>
-          See the latest contributors
-        </a>
-        .
-      </p>
-      <WelkDivider />
-      <h2>Want to join the story?</h2>
-      <p>
-        Report an issue, suggest a component, or send a pull request. Small
-        improvements count.
-      </p>
-      <p>
-        <a href={`${repository}/blob/main/CONTRIBUTING.md`}>
-          Read the contribution guide
-        </a>{" "}
-        / <a href={`${repository}/issues`}>Browse issues</a>
-      </p>
-    </section>
   );
 }
 

@@ -137,7 +137,23 @@ describe("WelkUI showcase", () => {
     expect(consoleError).not.toHaveBeenCalled();
   });
 
-  it("provides FAQ, verified contributor credits and not-found states", () => {
+  it("provides FAQ, live contributor credits and not-found states", async () => {
+    vi.stubGlobal(
+      "fetch",
+      vi.fn().mockResolvedValue(
+        new Response(
+          JSON.stringify([
+            {
+              id: 62955737,
+              login: "No0b-master",
+              avatar_url:
+                "https://avatars.githubusercontent.com/u/62955737?v=4",
+              contributions: 4,
+            },
+          ]),
+        ),
+      ),
+    );
     render(<App />);
     navigate("/faq/");
     fireEvent.click(screen.getByText("What is WelkUI?"));
@@ -145,16 +161,15 @@ describe("WelkUI showcase", () => {
       screen.getByText("What is WelkUI?").closest("details"),
     ).toHaveAttribute("open");
     navigate("/contributors/");
-    expect(screen.getByRole("link", { name: "No0b-master" })).toHaveAttribute(
-      "href",
-      "https://github.com/No0b-master",
-    );
+    expect(
+      await screen.findByRole("link", { name: "No0b-master" }),
+    ).toHaveAttribute("href", "https://github.com/No0b-master");
     const avatar = screen.getByRole("img", { name: "No0b-master" });
     expect(avatar.querySelector("img")).toHaveAttribute(
       "src",
       "https://avatars.githubusercontent.com/u/62955737?v=4",
     );
-    expect(avatar.className).toContain("md");
+    expect(avatar.className).toContain("lg");
     navigate("/components/Unknown/");
     expect(
       screen.getByRole("heading", { name: "Component not found" }),

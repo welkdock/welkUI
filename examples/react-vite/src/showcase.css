@@ -371,27 +371,39 @@ p {
   max-width: 52rem;
   margin: auto;
 }
+.topContributors {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr));
+  gap: 1rem;
+  padding: 0;
+  list-style: none;
+}
 .surface.contributor {
   display: flex;
   align-items: center;
   gap: 1rem;
-  max-width: 26rem;
-  margin-block: 1.5rem;
-  padding: 0.6rem 1rem;
+  min-width: 0;
+  padding: 1.25rem;
 }
-.contributorName {
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-}
-.contributor h2 {
-  margin: 0;
+.contributor h3 {
+  margin: 0.5rem 0 0;
   font-size: 1.25rem;
+  overflow-wrap: anywhere;
 }
 .contributor p {
   margin: 0.15rem 0 0;
   font-size: 0.9rem;
+}
+.contributorAvatars {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  padding: 0;
+  list-style: none;
+}
+.contributorAvatars a {
+  display: inline-flex;
+  border-radius: 50%;
 }
 .footer {
   padding-bottom: 2rem;

@@ -89,6 +89,11 @@ Storybook without requiring a rebuild after changing `src/`. Production showcase
 builds and the Next.js example use the **built** library, so run `pnpm build`
 before validating those.
 
+The showcase contributors page fetches the public GitHub contributors API in the
+browser, featuring the top three by contribution count and listing the rest as
+compact avatars. No token is required; loading, empty and rate-limit/error states
+are displayed, with a retry action and a link to GitHub.
+
 ## Branches, commits and pull requests
 
 ### Branch names
