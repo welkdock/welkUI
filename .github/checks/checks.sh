@@ -1,0 +1,1 @@
+npx pnpm format && npx pnpm check && npx pnpm build
