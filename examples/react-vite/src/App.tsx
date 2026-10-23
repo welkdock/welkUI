@@ -7,7 +7,6 @@ import {
   WelkButton,
   WelkCard,
   WelkDivider,
-  WelkIconButton,
   WelkMenu,
   WelkStickerCard,
   WelkSwitch,
@@ -28,6 +27,7 @@ import {
 } from "./router";
 import { applySeo, getSeo } from "./seo";
 import { faqs, repository } from "./siteContent";
+import { Code } from "./code";
 
 const pages = [
   { title: "Home", route: "/" },
@@ -36,69 +36,6 @@ const pages = [
   { title: "Contributors", route: "/contributors/" },
 ];
 const sorted = [...catalogue].sort((a, b) => a.name.localeCompare(b.name));
-
-function Code({ children }: { children: string }) {
-  const [copyState, setCopyState] = useState<
-    "idle" | "copying" | "copied" | "error"
-  >("idle");
-
-  async function copy() {
-    if (!navigator.clipboard?.writeText) {
-      setCopyState("error");
-      return;
-    }
-    setCopyState("copying");
-    try {
-      await navigator.clipboard.writeText(children);
-      setCopyState("copied");
-    } catch {
-      setCopyState("error");
-    }
-  }
-
-  return (
-    <div className="codeBlock">
-      <div className="codeToolbar">
-        <span>React / TSX</span>
-        <WelkIconButton
-          label={copyState === "copied" ? "Copy code again" : "Copy code"}
-          disabled={copyState === "copying"}
-          onClick={copy}
-          icon={
-            <svg
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-            >
-              {copyState === "copied" ? (
-                <path d="m5 12 4 4L19 6" />
-              ) : (
-                <>
-                  <rect x="8" y="8" width="12" height="13" rx="2" />
-                  <path d="M16 8V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h3" />
-                </>
-              )}
-            </svg>
-          }
-        />
-      </div>
-      <pre className="code">
-        <code>{children}</code>
-      </pre>
-      <p
-        className="copyFeedback finePrint"
-        role={copyState === "error" ? "alert" : "status"}
-      >
-        {copyState === "error"
-          ? "Could not copy code. Allow clipboard access or select and copy the code manually."
-          : copyState === "copied"
-            ? "Code copied!"
-            : ""}
-      </p>
-    </div>
-  );
-}
 
 function Home() {
   return (
