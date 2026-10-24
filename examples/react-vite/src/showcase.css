@@ -69,6 +69,67 @@ p {
 .brandDot {
   color: #3057c4;
 }
+.editionSwitcher {
+  position: relative;
+  margin-left: auto;
+  font-size: 0.85rem;
+}
+.editionSwitcher summary,
+.editionOptions button {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.75rem;
+  font: inherit;
+  cursor: pointer;
+}
+.editionSwitcher summary {
+  list-style: none;
+  border: var(--welk-border);
+  border-radius: 9px 6px 11px 7px;
+  background: white;
+  box-shadow: var(--welk-shadow);
+}
+.editionSwitcher summary::-webkit-details-marker {
+  display: none;
+}
+.editionSwitcher img {
+  object-fit: contain;
+}
+.editionChevron {
+  border: 5px solid transparent;
+  border-bottom: 0;
+  border-top-color: currentColor;
+}
+.editionOptions {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 0.65rem);
+  z-index: 20;
+  min-width: 12rem;
+  padding: 0.35rem;
+  background: white;
+  border: var(--welk-border);
+  border-radius: 9px;
+  box-shadow: var(--welk-shadow);
+}
+.editionOptions button {
+  width: 100%;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: inherit;
+  text-align: left;
+}
+.editionOptions button:hover,
+.editionOptions button[aria-pressed="true"] {
+  background: var(--welk-color-accent);
+}
+.editionSwitcher summary:focus-visible,
+.editionOptions button:focus-visible {
+  outline: 3px solid var(--welk-color-focus);
+  outline-offset: 3px;
+}
 .row {
   display: flex;
   align-items: center;
@@ -417,6 +478,13 @@ p {
   padding-block: 1rem;
 }
 
+@media (max-width: 1100px) {
+  .siteHeader nav {
+    order: 3;
+    width: 100%;
+  }
+}
+
 @media (max-width: 900px) {
   .hero {
     grid-template-columns: 1fr;
@@ -442,7 +510,25 @@ p {
     padding: 0 1rem;
   }
   .siteHeader {
-    gap: 1rem;
+    gap: 0.5rem;
+  }
+  .brand {
+    font-size: 1.5rem;
+  }
+  .brandLogo {
+    width: 1.75rem;
+    margin-right: 0.25rem;
+  }
+  .editionSwitcher {
+    font-size: 0.75rem;
+  }
+  .editionSwitcher summary {
+    padding: 0.6rem;
+    gap: 0.4rem;
+  }
+  .editionSwitcher img {
+    width: 20px;
+    height: 20px;
   }
   .siteHeader nav {
     order: 3;
@@ -463,4 +549,303 @@ p {
   .demoSurface {
     padding: 1rem;
   }
+}
+
+.flutterPreview {
+  display: grid;
+  justify-items: center;
+  gap: 12px;
+  margin: 20px 0;
+}
+
+.phoneFrame {
+  position: relative;
+  width: min(100%, 360px);
+  aspect-ratio: 71.6 / 147.6;
+  padding: 11px;
+  border: 3px solid #242424;
+  border-radius: 54px;
+  background: linear-gradient(145deg, #4a4a4f, #1c1c1e 45%, #3a3a3d);
+  box-shadow:
+    inset 0 0 0 2px #8e8e93,
+    inset 0 0 0 5px #1c1c1e,
+    5px 5px 0 #242424;
+}
+
+.phoneButton {
+  position: absolute;
+  width: 4px;
+  border: 2px solid #242424;
+  background: #3a3a3d;
+}
+
+.phoneAction,
+.phoneVolumeUp,
+.phoneVolumeDown {
+  left: -7px;
+  border-right: 0;
+  border-radius: 3px 0 0 3px;
+}
+
+.phoneAction {
+  top: 17%;
+  height: 5%;
+}
+
+.phoneVolumeUp {
+  top: 25%;
+  height: 9%;
+}
+
+.phoneVolumeDown {
+  top: 36%;
+  height: 9%;
+}
+
+.phonePower {
+  top: 28%;
+  right: -7px;
+  height: 14%;
+  border-left: 0;
+  border-radius: 0 3px 3px 0;
+}
+
+.phoneScreen {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+  border-radius: 43px;
+  background: #fffdf5;
+  /* Keeps rounded clipping for the iframe in Safari. */
+  isolation: isolate;
+}
+
+.phoneStatusBar {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  flex: none;
+  height: 54px;
+  padding: 0 24px 0 30px;
+  color: #000;
+  font-family:
+    -apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.dynamicIsland {
+  width: 108px;
+  height: 31px;
+  border-radius: 20px;
+  background: #000;
+}
+
+.phoneStatusIcons {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 5px;
+  fill: currentColor;
+}
+
+.phoneBattery {
+  position: relative;
+  display: inline-flex;
+  width: 24px;
+  height: 12px;
+  padding: 1.5px;
+  border: 1px solid rgb(0 0 0 / 40%);
+  border-radius: 4px;
+}
+
+.phoneBattery::after {
+  content: "";
+  position: absolute;
+  top: 3px;
+  right: -3.5px;
+  width: 1.5px;
+  height: 4px;
+  border-radius: 0 1px 1px 0;
+  background: rgb(0 0 0 / 40%);
+}
+
+.phoneBattery span {
+  width: 80%;
+  border-radius: 2px;
+  background: currentColor;
+}
+
+.phoneViewport {
+  position: relative;
+  display: grid;
+  place-items: center;
+  flex: 1;
+  min-height: 0;
+}
+
+.phoneViewport iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+.homeIndicator {
+  flex: none;
+  align-self: center;
+  width: 36%;
+  height: 5px;
+  margin: 8px 0;
+  border-radius: 3px;
+  background: #000;
+}
+
+@media (max-width: 360px) {
+  .phoneFrame {
+    padding: 8px;
+    border-radius: 44px;
+  }
+  .phoneScreen {
+    border-radius: 36px;
+  }
+  .phoneStatusBar {
+    height: 46px;
+    padding: 0 18px 0 22px;
+    font-size: 13px;
+  }
+  .dynamicIsland {
+    width: 84px;
+    height: 25px;
+  }
+}
+
+.phoneMessage {
+  display: grid;
+  justify-items: center;
+  gap: 12px;
+  margin: 0;
+  padding: 24px;
+  text-align: center;
+}
+
+.phoneLoading {
+  position: absolute;
+  inset: 0;
+  place-content: center;
+  z-index: 1;
+  background: #fffdf5;
+}
+
+.flutterPreview > .finePrint {
+  max-width: 420px;
+  text-align: center;
+}
+
+.explorer.flutterExplorer {
+  grid-template-columns: 18rem minmax(0, 1fr) 21.5rem;
+  grid-template-rows: auto 1fr;
+  grid-template-areas:
+    "nav intro device"
+    "nav docs device";
+  column-gap: 2.5rem;
+  row-gap: 0;
+}
+
+.flutterExplorer .componentNav {
+  grid-area: nav;
+}
+
+.flutterIntro {
+  grid-area: intro;
+}
+
+.flutterDocs {
+  grid-area: docs;
+}
+
+.flutterDocs > h3:first-child {
+  margin-top: 0.5rem;
+}
+
+.flutterDevice {
+  grid-area: device;
+  position: sticky;
+  top: 1rem;
+  align-self: start;
+}
+
+.flutterDevice .flutterPreview {
+  margin: 0;
+}
+
+/* Keep the whole sticky device visible on shorter screens. */
+.flutterDevice .phoneFrame {
+  width: min(100%, 340px, calc((100dvh - 9rem) * 71.6 / 147.6));
+}
+
+@media (max-width: 1100px) {
+  .explorer.flutterExplorer {
+    grid-template-columns: 15rem minmax(0, 1fr);
+    grid-template-rows: auto auto 1fr;
+    grid-template-areas:
+      "nav intro"
+      "nav device"
+      "nav docs";
+    column-gap: 1.5rem;
+  }
+  .flutterDevice {
+    position: static;
+    margin-bottom: 1.5rem;
+  }
+  .flutterDevice .phoneFrame {
+    width: min(100%, 360px);
+  }
+}
+
+@media (max-width: 640px) {
+  .explorer.flutterExplorer {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: none;
+    grid-template-areas:
+      "nav"
+      "intro"
+      "device"
+      "docs";
+  }
+}
+
+/* Dracula theme (https://draculatheme.com) for Flutter code blocks. */
+.codeBlock-dracula .code {
+  border-color: #44475a;
+  background: #282a36;
+  color: #f8f8f2;
+}
+.codeBlock-dracula .code .syntax-keyword {
+  color: #ff79c6;
+}
+.codeBlock-dracula .code .syntax-string {
+  color: #f1fa8c;
+}
+.codeBlock-dracula .code .syntax-type {
+  color: #8be9fd;
+  font-style: italic;
+}
+.codeBlock-dracula .code .syntax-function {
+  color: #50fa7b;
+}
+.codeBlock-dracula .code .syntax-attribute {
+  color: #ffb86c;
+}
+.codeBlock-dracula .code .syntax-identifier {
+  color: #f8f8f2;
+}
+.codeBlock-dracula .code .syntax-number {
+  color: #bd93f9;
+}
+.codeBlock-dracula .code .syntax-comment {
+  color: #6272a4;
 }

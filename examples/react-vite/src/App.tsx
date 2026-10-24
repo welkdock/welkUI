@@ -14,7 +14,6 @@ import { catalogue, ComponentDemo } from "./catalogue";
 import { getComponentDocs } from "./componentDocs";
 import { componentGuides } from "./componentGuides";
 import { VariantGallery } from "./VariantGallery";
-import reactLogo from "../../../assets/images/react.svg.webp";
 import githubLogo from "../../../assets/images/github.svg";
 import welkuiLogo from "../../../assets/images/welkui-logo.png";
 import {
@@ -25,7 +24,10 @@ import {
   subscribe,
 } from "./router";
 import { applySeo, getSeo } from "./seo";
-import { faqs, repository } from "./siteContent";
+import { editions, getEdition, type Edition } from "./editions";
+import { EditionSwitcher } from "./EditionSwitcher";
+import { FlutterComponents } from "./FlutterComponents";
+import { flutterPackage } from "./flutterWidgets";
 import { Code } from "./code";
 import { Contributors } from "./Contributors";
 
@@ -37,7 +39,10 @@ const pages = [
 ];
 const sorted = [...catalogue].sort((a, b) => a.name.localeCompare(b.name));
 
-function Home() {
+function Home({ edition }: { edition: Edition }) {
+  const { prefix, icon, repository } = editions[edition];
+  const flutter = edition === "flutter";
+  const go = (path: string) => navigate(`${prefix}${path}`);
   return (
     <>
       <section className="hero">
@@ -49,24 +54,18 @@ function Home() {
             <span>Playful interfaces.</span>
           </h1>
           <p className="lede">
-            Meet WelkUI. An open-source React UI library for comical minds.
-            Comic-inspired components for interfaces with a little more
-            character.
+            {flutter
+              ? "Meet WelkUI Flutter. An open-source mobile UI library for comical minds. Comic-inspired widgets for Android and iOS apps with a little more character."
+              : "Meet WelkUI. An open-source React UI library for comical minds. Comic-inspired components for interfaces with a little more character."}
           </p>
           <div className="row">
             <WelkButton
               onClick={() => {
-                navigate("/components/");
+                go("/components/");
               }}
             >
-              Explore components
+              {flutter ? "Explore mobile widgets" : "Explore components"}
             </WelkButton>
-            {/* <WelkBadge variant="warning">
-              <span className="reactBrand">
-                <img src={reactLogo} alt="React logo" width={28} height={25} />
-                React + TypeScript
-              </span>
-            </WelkBadge> */}
             <a className="githubLink" href={repository}>
               <img src={githubLogo} alt="" width={24} height={24} />
               Open source on GitHub
@@ -77,16 +76,20 @@ function Home() {
           <WelkStickerCard
             title="Hello, hero."
             subtitle="Your next great interface starts here."
-            sticker={{ src: reactLogo, alt: "" }}
+            sticker={{ src: icon, alt: "" }}
             onClick={() => {
-              navigate("/components/WelkStickerCard/");
+              go(flutter ? "/components/" : "/components/WelkStickerCard/");
             }}
           />
           <div className="row">
             <WelkBadge variant="success">
-              {catalogue.length} components
+              {flutter ? "Android + iOS" : `${catalogue.length} components`}
             </WelkBadge>
-            <WelkBadge>100% personality</WelkBadge>
+            <WelkBadge>
+              {flutter
+                ? `v${flutterPackage.version} on pub.dev`
+                : "100% personality"}
+            </WelkBadge>
           </div>
         </div>
       </section>
@@ -99,71 +102,124 @@ function Home() {
             title="Hand-drawn energy"
             subtitle="Uneven corners, bold outlines, cheerful colors. No bland defaults."
             onClick={() => {
-              navigate("/components/WelkBadge/");
+              go(flutter ? "/components/WelkCard/" : "/components/WelkBadge/");
             }}
           />
           <WelkCard
-            title="Built for React"
+            title={flutter ? "Built for Flutter" : "Built for React"}
             icon={
               <img
-                src={reactLogo}
+                src={icon}
                 alt=""
                 className="reactFeatureLogo"
                 width={48}
                 height={43}
               />
             }
-            subtitle="Typed props, independent exports, and Next.js client boundaries."
+            subtitle={
+              flutter
+                ? "Idiomatic Dart widgets for Android and iOS. Add them with flutter pub add."
+                : "Typed props, independent exports, and Next.js client boundaries."
+            }
             onClick={() => {
-              navigate("/faq/");
+              go("/faq/");
             }}
           />
           <WelkCard
             title="Thoughtful interactions"
-            subtitle="Native controls, keyboard focus, and respect for reduced motion."
+            subtitle={
+              flutter
+                ? "Mobile-first guidance for touch, text scaling, and screen readers."
+                : "Native controls, keyboard focus, and respect for reduced motion."
+            }
             onClick={() => {
-              navigate("/components/WelkSwitch/");
+              go("/components/WelkSwitch/");
             }}
           />
         </div>
       </section>
       <section className="section" aria-labelledby="preview-title">
-        <p className="eyebrow">TRY A LITTLE COMIC MAGIC</p>
-        <h2 id="preview-title">Real components. Ready to play.</h2>
+        <p className="eyebrow">
+          {flutter
+            ? "A LITTLE COMIC MAGIC FOR MOBILE"
+            : "TRY A LITTLE COMIC MAGIC"}
+        </p>
+        <h2 id="preview-title">
+          {flutter
+            ? "Mobile widgets. A new chapter."
+            : "Real components. Ready to play."}
+        </h2>
         <div className="previewGrid">
           <article className="surface">
             <WelkBadge>01 / ACTION</WelkBadge>
             <h3>A button worth pressing</h3>
-            <ComponentDemo name="WelkButton" />
+            {flutter ? (
+              <p>
+                Tap a comic button in the{" "}
+                <a href="/flutter/components/WelkButton/">
+                  WelkButton live preview
+                </a>
+                .
+              </p>
+            ) : (
+              <ComponentDemo name="WelkButton" />
+            )}
           </article>
           <article className="surface">
             <WelkBadge variant="info">02 / CONTROL</WelkBadge>
             <h3>Switch things up</h3>
-            <WelkSwitch label="Hero mode" />
+            {flutter ? (
+              <p>
+                Flip it on and off in the{" "}
+                <a href="/flutter/components/WelkSwitch/">
+                  WelkSwitch live preview
+                </a>
+                .
+              </p>
+            ) : (
+              <WelkSwitch label="Hero mode" />
+            )}
           </article>
           <article className="surface">
             <WelkBadge variant="success">03 / DISCOVER</WelkBadge>
             <h3>A little more to the story</h3>
-            <WelkAccordion title="Open a new chapter">
-              Built with WelkUI, not another UI kit.
-            </WelkAccordion>
+            {flutter ? (
+              <p>
+                Tell a story in the{" "}
+                <a href="/flutter/components/WelkCard/">
+                  WelkCard live preview
+                </a>
+                .
+              </p>
+            ) : (
+              <WelkAccordion title="Open a new chapter">
+                Built with WelkUI, not another UI kit.
+              </WelkAccordion>
+            )}
           </article>
         </div>
       </section>
       <section className="cta">
         <WelkBadge>THE STORY CONTINUES</WelkBadge>
-        <h2>Find your next favorite component.</h2>
+        <h2>
+          {flutter
+            ? "Find your next favorite mobile widget."
+            : "Find your next favorite component."}
+        </h2>
         <p>
-          One component at a time. Live variants, detailed guides, and
-          copy-ready examples.
+          {flutter
+            ? "One widget at a time. Live mobile previews, copy-ready Dart, and every parameter."
+            : "One component at a time. Live variants, detailed guides, and copy-ready examples."}
         </p>
         <WelkButton
           size="lg"
           onClick={() => {
-            navigate("/components/");
+            go("/components/");
           }}
         >
-          Show more / test components
+          {flutter
+            ? "Explore Flutter documentation"
+            : "Show more / test components"}
         </WelkButton>
       </section>
     </>
@@ -327,9 +383,13 @@ function Components({ name }: { name?: string }) {
 export function App({ path: renderPath }: { path?: string } = {}) {
   const livePath = useSyncExternalStore(subscribe, getPath, getServerPath);
   const path = renderPath ?? livePath;
-  const [page = "", name] = path.split("/").filter(Boolean);
+  const edition = getEdition(path);
+  const { prefix, repository, faqs } = editions[edition];
+  const localPath = prefix ? path.slice(prefix.length) : path;
+  const [page = "", name] = localPath.split("/").filter(Boolean);
   const current = page || "home";
   const pageTitle = pages.find((item) => item.route === `/${page}/`)?.title;
+  const validRoute = getSeo(path).indexable;
   const mainRef = useRef<HTMLElement>(null);
   const firstRender = useRef(true);
   const [routeNotice, setRouteNotice] = useState("");
@@ -352,7 +412,7 @@ export function App({ path: renderPath }: { path?: string } = {}) {
   return (
     <div className="site">
       <header className="siteHeader">
-        <a className="brand" href="/" aria-label="WelkUI home">
+        <a className="brand" href={`${prefix}/`} aria-label="WelkUI home">
           <img className="brandLogo" src={welkuiLogo} alt="" />
           Welk<span>UI</span>
           <span className="brandDot">!</span>
@@ -362,8 +422,8 @@ export function App({ path: renderPath }: { path?: string } = {}) {
             <WelkButton
               key={item.route}
               variant={
-                path === item.route ||
-                (item.route !== "/" && path.startsWith(item.route))
+                localPath === item.route ||
+                (item.route !== "/" && localPath.startsWith(item.route))
                   ? "primary"
                   : "ghost"
               }
@@ -373,13 +433,13 @@ export function App({ path: renderPath }: { path?: string } = {}) {
                   ? "page"
                   : undefined
               }
-              onClick={() => navigate(item.route)}
+              onClick={() => navigate(`${prefix}${item.route}`)}
             >
               {item.title}
             </WelkButton>
           ))}
         </nav>
-        <WelkBadge size="sm">REACT EDITION</WelkBadge>
+        <EditionSwitcher edition={edition} path={path} />
       </header>
       <WelkDivider thickness={3} />
       <main
@@ -387,21 +447,23 @@ export function App({ path: renderPath }: { path?: string } = {}) {
         id="main-content"
         tabIndex={-1}
         className="main"
-        key={`${page}/${name ?? ""}`}
+        key={path}
       >
         {current !== "home" && (
           <WelkBreadCrumbs
             items={[
-              { label: "Home", href: "/" },
+              { label: "Home", href: `${prefix}/` },
               { label: pageTitle ?? "Not found" },
             ]}
           />
         )}
-        {current === "home" ? (
-          <Home />
-        ) : current === "components" ? (
+        {current === "home" && validRoute ? (
+          <Home edition={edition} />
+        ) : current === "components" && edition === "react" ? (
           <Components name={name} />
-        ) : current === "faq" ? (
+        ) : current === "components" && validRoute ? (
+          <FlutterComponents name={name} />
+        ) : current === "faq" && validRoute ? (
           <section className="section faq">
             <WelkBadge>GOOD QUESTIONS</WelkBadge>
             <h1>A little less mystery.</h1>
@@ -414,15 +476,15 @@ export function App({ path: renderPath }: { path?: string } = {}) {
               ))}
             </div>
           </section>
-        ) : current === "contributors" ? (
-          <Contributors />
+        ) : current === "contributors" && validRoute ? (
+          <Contributors edition={edition} />
         ) : (
           <section className="section">
             <h1>This panel is missing.</h1>
             <p>Head back to the beginning.</p>
             <WelkButton
               onClick={() => {
-                navigate("/");
+                navigate(`${prefix}/`);
               }}
             >
               Go home
@@ -434,7 +496,8 @@ export function App({ path: renderPath }: { path?: string } = {}) {
         <WelkDivider thickness={3} />
         <div className="footerRow">
           <p>
-            <strong>WelkUI</strong> / A little comic relief for the web.
+            <strong>WelkUI</strong> / A little comic relief for{" "}
+            {edition === "flutter" ? "mobile" : "the web"}.
           </p>
           <a className="githubLink" href={repository}>
             <img src={githubLogo} alt="" width={24} height={24} />

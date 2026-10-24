@@ -3,6 +3,12 @@ import { getComponentDocs } from "./componentDocs";
 import { faqs, organizationUrl, repository, siteUrl } from "./siteContent";
 import ogImagePath from "../../../assets/images/welkui-og.png";
 import logoPath from "../../../assets/images/welkui-logo.png";
+import { editions } from "./editions";
+import {
+  flutterPackage,
+  flutterWidgets,
+  getFlutterWidget,
+} from "./flutterWidgets";
 
 type JsonLd = Record<string, unknown>;
 
@@ -100,6 +106,11 @@ export const seoRoutes = [
   ...componentNames.map((name) => `/components/${name}/`),
   "/faq/",
   "/contributors/",
+  "/flutter/",
+  "/flutter/components/",
+  ...flutterWidgets.map(({ name }) => `/flutter/components/${name}/`),
+  "/flutter/faq/",
+  "/flutter/contributors/",
 ];
 
 export function getSeo(path: string): SeoMetadata {
@@ -112,6 +123,137 @@ export function getSeo(path: string): SeoMetadata {
     type: "website" as const,
     imageAlt: "WelkUI: comic-inspired React component library",
   };
+
+  if (page === "flutter") {
+    const flutterPages: Record<
+      string,
+      { title: string; description: string; schema: string }
+    > = {
+      "/flutter/": {
+        title: "WelkUI Flutter | Comic-inspired mobile UI for Android & iOS",
+        description:
+          "Meet WelkUI Flutter, a comic-inspired widget library for Android and iOS apps. Install welkui_flutter from pub.dev and explore its docs.",
+        schema: "WebPage",
+      },
+      "/flutter/components/": {
+        title: "Flutter widgets for Android & iOS | WelkUI",
+        description:
+          "Browse WelkUI Flutter widgets for Android and iOS with live mobile previews, copy-ready Dart examples and constructor references.",
+        schema: "CollectionPage",
+      },
+      ...Object.fromEntries(
+        flutterWidgets.map((widget) => [
+          `/flutter/components/${widget.name}/`,
+          {
+            title: `${widget.name} | Flutter widget & live preview | WelkUI`,
+            description: shorten(
+              `${widget.name} Flutter widget: ${widget.description} Try it in a live mobile preview.`,
+            ),
+            schema: "TechArticle",
+          },
+        ]),
+      ),
+      "/flutter/faq/": {
+        title: "FAQ | WelkUI Flutter mobile widget library",
+        description:
+          "Answers about WelkUI Flutter: Android and iOS scope, package availability, mobile documentation, accessibility, and contributing to the Flutter project.",
+        schema: "FAQPage",
+      },
+      "/flutter/contributors/": {
+        title: "Flutter contributors | WelkUI",
+        description:
+          "Meet the contributors building WelkUI Flutter for Android and iOS, explore the mobile widget repository, and find ways to contribute on GitHub.",
+        schema: "AboutPage",
+      },
+    };
+    const flutterPage = flutterPages[path];
+    const widget = getFlutterWidget(path.split("/").filter(Boolean)[2]);
+    const flutterLibraryId = `${siteUrl}/#flutter-library`;
+    const flutterLibrary = {
+      ...library,
+      "@id": flutterLibraryId,
+      name: `WelkUI Flutter (${flutterPackage.name})`,
+      description: flutterPages["/flutter/"].description,
+      url: absolute("/flutter/"),
+      codeRepository: editions.flutter.repository,
+      programmingLanguage: "Dart",
+      runtimePlatform: ["Android", "iOS"],
+      version: flutterPackage.version,
+      sameAs: [flutterPackage.url],
+    };
+    const flutterGraph = (...nodes: JsonLd[]) => ({
+      "@context": "https://schema.org",
+      "@graph": [
+        organization,
+        {
+          ...website,
+          description:
+            "WelkUI documentation for React interfaces and Flutter mobile apps.",
+        },
+        flutterLibrary,
+        ...nodes,
+      ],
+    });
+    if (flutterPage) {
+      return {
+        ...base,
+        ...(widget ? { type: "article" as const } : {}),
+        title: flutterPage.title,
+        description: flutterPage.description,
+        imageAlt: "WelkUI Flutter: comic-inspired mobile widget library",
+        jsonLd: flutterGraph(
+          {
+            "@type": flutterPage.schema,
+            "@id": `${canonical}#webpage`,
+            url: canonical,
+            name: flutterPage.title,
+            isPartOf: { "@id": websiteId },
+            about: { "@id": flutterLibraryId },
+            ...(flutterPage.schema === "FAQPage"
+              ? {
+                  mainEntity: editions.flutter.faqs.map(
+                    ([question, answer]) => ({
+                      "@type": "Question",
+                      name: question,
+                      acceptedAnswer: { "@type": "Answer", text: answer },
+                    }),
+                  ),
+                }
+              : {}),
+          },
+          breadcrumbs(
+            path === "/flutter/"
+              ? [["Flutter Home", "/flutter/"]]
+              : widget
+                ? [
+                    ["Flutter Home", "/flutter/"],
+                    ["Components", "/flutter/components/"],
+                    [widget.name, path],
+                  ]
+                : [
+                    ["Flutter Home", "/flutter/"],
+                    [
+                      name === "faq"
+                        ? "FAQ"
+                        : name === "contributors"
+                          ? "Contributors"
+                          : "Components",
+                      path,
+                    ],
+                  ],
+          ),
+        ),
+      };
+    }
+    return {
+      ...base,
+      canonical: undefined,
+      indexable: false,
+      title: "Page not found | WelkUI Flutter",
+      description: "This WelkUI Flutter documentation page does not exist.",
+      jsonLd: flutterGraph(),
+    };
+  }
 
   if (!page) {
     return {

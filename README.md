@@ -212,6 +212,46 @@ The website at **[ui.welkdock.com](https://ui.welkdock.com)** is built from
 <p align="center"><img src="./docs/images/mobile.png" alt="WelkUI website on a phone" width="320" /></p>
 </details>
 
+### Flutter Edition documentation
+
+The website defaults to React Edition. Use the edition dropdown in the header
+to open Flutter Edition at `/flutter/`, with matching components, FAQ, and
+contributors pages. Edition-specific content and repository links are defined in
+[editions.ts](./examples/react-vite/src/editions.ts).
+
+The mobile-only Flutter package is developed separately in
+[welkUI-flutter](https://github.com/welkdock/welkUI-flutter). Its documentation
+lives here; contributors are loaded from that repository. The package is published
+on pub.dev as [welkui_flutter](https://pub.dev/packages/welkui_flutter). Widget
+docs (Dart usage, constructor parameters and notes) and the package version are
+defined in [flutterWidgets.ts](./examples/react-vite/src/flutterWidgets.ts).
+After publishing a new release, update `flutterPackage.version` and any
+changed widget APIs there.
+
+#### Live mobile previews
+
+Each Flutter widget page embeds the Flutter example app (built with
+`flutter build web`) in a phone frame. The app loads only after the reader
+clicks **Run live preview**, so the website stays light. Set the deployed app URL
+in `flutterPreviewUrl` in
+[flutterWidgets.ts](./examples/react-vite/src/flutterWidgets.ts). It must use
+`https` (`http` is allowed only for `localhost`). While it is empty, pages show a
+"preview coming soon" placeholder.
+
+The website loads `<flutterPreviewUrl>?embed=1#/<route>`:
+
+| Widget     | Route     |
+| ---------- | --------- |
+| WelkButton | `/button` |
+| WelkSwitch | `/switch` |
+| WelkCard   | `/card`   |
+| WelkMenu   | `/menu`   |
+
+In the example app, use hash-based routes and read
+`Uri.base.queryParameters['embed'] == '1'` to hide the app's own navigation.
+`embed` sits before the `#`, so it is a real query parameter. The app's host must
+allow being framed by `ui.welkdock.com`; don't send `X-Frame-Options: DENY`.
+
 <details>
 <summary><b>🔎 SEO and deployment details</b></summary>
 
