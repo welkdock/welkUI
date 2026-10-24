@@ -197,7 +197,8 @@ Checklist:
 
 ## Validation
 
-Run these before pushing. CI runs the same checks on every pull request.
+Run `.github/checks/checks.sh` before pushing your changes. CI runs checks on
+every pull request.
 
 ```bash
 pnpm format              # Prettier
