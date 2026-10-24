@@ -27,7 +27,11 @@ import { applySeo, getSeo } from "./seo";
 import { editions, getEdition, type Edition } from "./editions";
 import { EditionSwitcher } from "./EditionSwitcher";
 import { FlutterComponents } from "./FlutterComponents";
-import { flutterPackage } from "./flutterWidgets";
+import {
+  flutterImport,
+  flutterInstall,
+  flutterPackage,
+} from "./flutterWidgets";
 import { Code } from "./code";
 import { Contributors } from "./Contributors";
 
@@ -93,6 +97,36 @@ function Home({ edition }: { edition: Edition }) {
           </div>
         </div>
       </section>
+      {flutter && (
+        <section
+          className="section installSection"
+          aria-labelledby="install-title"
+        >
+          <div>
+            <p className="eyebrow">GET IT ON PUB.DEV</p>
+            <h2 id="install-title">Add it to your app in one line.</h2>
+            <p>
+              <a href={flutterPackage.url}>
+                {flutterPackage.name} {flutterPackage.version}
+              </a>{" "}
+              is live on pub.dev. Requires Dart {flutterPackage.dart}+ and
+              Flutter {flutterPackage.flutter}+.
+            </p>
+            <a className="githubLink" href={flutterPackage.url}>
+              <img src={icon} alt="" width={24} height={24} />
+              View on pub.dev
+            </a>
+          </div>
+          <div className="installSteps">
+            <Code language="Terminal" theme="dracula">
+              {flutterInstall}
+            </Code>
+            <Code language="Dart" theme="dracula">
+              {flutterImport}
+            </Code>
+          </div>
+        </section>
+      )}
       <WelkDivider thickness={3} />
       <section className="section" aria-labelledby="features-title">
         <p className="eyebrow">SMALL DETAILS. BIG PERSONALITY.</p>

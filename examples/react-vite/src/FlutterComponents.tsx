@@ -15,7 +15,7 @@ export function FlutterComponents({ name }: { name?: string }) {
   const widget = name ? getFlutterWidget(name) : flutterWidgets[0];
   return (
     <>
-      <h1>Component field guide</h1>
+      <h1>Widget Field Guide</h1>
       <p>
         Explore Flutter widgets for Android and iOS. Pick a widget, run its live
         mobile preview, and copy the Dart code.

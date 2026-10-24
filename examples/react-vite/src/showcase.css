@@ -185,6 +185,29 @@ p {
 .section {
   padding: 3rem 0;
 }
+.installSection {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr);
+  gap: 2rem;
+  align-items: center;
+}
+.installSection a {
+  color: #3057c4;
+  text-decoration: none;
+}
+.installSection a:hover {
+  text-decoration: underline;
+}
+.installSteps {
+  display: grid;
+  gap: 1rem;
+  min-width: 0;
+}
+@media (max-width: 800px) {
+  .installSection {
+    grid-template-columns: 1fr;
+  }
+}
 .eyebrow {
   font-size: 0.75rem;
   font-weight: 700;

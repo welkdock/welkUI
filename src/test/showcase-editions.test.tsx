@@ -65,6 +65,15 @@ describe("Website editions", () => {
       screen.getByRole("link", { name: "View source on GitHub" }),
     ).toHaveAttribute("href", editions.flutter.repository);
     expect(screen.queryByRole("switch")).not.toBeInTheDocument();
+    expect(
+      screen.getByRole("region", { name: "Add it to your app in one line." }),
+    ).toHaveTextContent("flutter pub add welkui_flutter");
+    expect(
+      screen.getByRole("link", { name: "View on pub.dev" }),
+    ).toHaveAttribute("href", "https://pub.dev/packages/welkui_flutter");
+    expect(
+      screen.queryByRole("link", { name: "Get it on pub.dev" }),
+    ).not.toBeInTheDocument();
     expect(document.querySelector("iframe")).toBeNull();
     expect(document.querySelector(".editionSwitcher")).not.toHaveAttribute(
       "open",
@@ -84,7 +93,7 @@ describe("Website editions", () => {
     fireEvent.click(screen.getByRole("button", { name: "Components" }));
     expect(window.location.pathname).toBe("/flutter/components/");
     expect(
-      screen.getByRole("heading", { name: "Component field guide" }),
+      screen.getByRole("heading", { name: "Widget Field Guide" }),
     ).toBeVisible();
     expect(
       screen.getByRole("navigation", { name: "Component list" }),
