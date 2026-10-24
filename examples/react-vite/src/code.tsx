@@ -24,14 +24,42 @@ const keywords = new Set([
   "var",
 ]);
 
-function highlightCode(source: string) {
+const dartKeywords = new Set([
+  ...keywords,
+  "class",
+  "extends",
+  "false",
+  "final",
+  "null",
+  "override",
+  "package",
+  "required",
+  "super",
+  "this",
+  "true",
+  "void",
+]);
+
+function highlightCode(source: string, language: string) {
+  const languageKeywords = language === "Dart" ? dartKeywords : keywords;
+  const jsx = language === "React / TSX";
+  const dart = language === "Dart";
+  const tokens = Array.from(source.matchAll(tokenPattern), ([token]) => token)
+    // Outside JSX, `<Name` is a generic type argument, not a tag.
+    .flatMap((token) =>
+      !jsx && /^<\/?[A-Za-z_$]/.test(token)
+        ? [token.match(/^<\/?/)![0], token.replace(/^<\/?/, "")]
+        : [token],
+    );
+  const nextToken = (index: number) =>
+    tokens.slice(index + 1).find((token) => !/^\s+$/.test(token));
   let inJsxTag = false;
   let jsxExpressionDepth = 0;
 
-  return Array.from(source.matchAll(tokenPattern), ([token], index) => {
+  return tokens.map((token, index) => {
     let tokenClass: string | undefined;
 
-    if (/^<\/?[A-Za-z_$]/.test(token)) {
+    if (jsx && /^<\/?[A-Za-z_$]/.test(token)) {
       inJsxTag = true;
       tokenClass = "syntax-tag";
     } else if (/^["'`]/.test(token)) {
@@ -56,8 +84,20 @@ function highlightCode(source: string) {
       /^[A-Za-z_$][\w$]*$/.test(token)
     ) {
       tokenClass = "syntax-attribute";
-    } else if (keywords.has(token)) {
+    } else if (languageKeywords.has(token)) {
       tokenClass = "syntax-keyword";
+    } else if (dart && token === "@") {
+      tokenClass = "syntax-keyword";
+    } else if (dart && /^_?[A-Z][\w$]*$/.test(token)) {
+      tokenClass = "syntax-type";
+    } else if (dart && /^[a-z_$][\w$]*$/.test(token)) {
+      const next = nextToken(index);
+      tokenClass =
+        next === "("
+          ? "syntax-function"
+          : next === ":"
+            ? "syntax-attribute"
+            : "syntax-identifier";
     } else if (/^[A-Za-z_$][\w$]*$/.test(token)) {
       tokenClass = "syntax-identifier";
     }
@@ -72,7 +112,15 @@ function highlightCode(source: string) {
   });
 }
 
-export function Code({ children }: { children: string }) {
+export function Code({
+  children,
+  language = "React / TSX",
+  theme = "monokai",
+}: {
+  children: string;
+  language?: string;
+  theme?: "monokai" | "dracula";
+}) {
   const [copyState, setCopyState] = useState<
     "idle" | "copying" | "copied" | "error"
   >("idle");
@@ -92,9 +140,9 @@ export function Code({ children }: { children: string }) {
   }
 
   return (
-    <div className="codeBlock">
+    <div className={`codeBlock codeBlock-${theme}`}>
       <div className="codeToolbar">
-        <span>React / TSX</span>
+        <span>{language}</span>
         <WelkIconButton
           label={copyState === "copied" ? "Copy code again" : "Copy code"}
           disabled={copyState === "copying"}
@@ -119,7 +167,7 @@ export function Code({ children }: { children: string }) {
         />
       </div>
       <pre className="code">
-        <code>{highlightCode(children)}</code>
+        <code>{highlightCode(children, language)}</code>
       </pre>
       <p
         className="copyFeedback finePrint"

@@ -31,7 +31,7 @@ beforeEach(() => {
 
 describe("showcase SEO", () => {
   it("lists every page once with unique titles, descriptions and canonicals", () => {
-    expect(seoRoutes).toHaveLength(catalogue.length + 4);
+    expect(seoRoutes).toHaveLength(catalogue.length + 12);
     const metadata = seoRoutes.map(getSeo);
     for (const key of ["title", "description", "canonical"] as const)
       expect(new Set(metadata.map((seo) => seo[key])).size).toBe(

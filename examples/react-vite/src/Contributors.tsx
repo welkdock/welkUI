@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { WelkAvatar, WelkBadge, WelkButton, WelkDivider } from "@welkui/react";
-import { repository } from "./siteContent";
+import { editions, type Edition } from "./editions";
 
 interface Contributor {
   id: number;
@@ -27,13 +27,16 @@ function isContributor(value: unknown): value is Contributor {
   );
 }
 
-async function loadContributors(signal: AbortSignal): Promise<Contributor[]> {
+async function loadContributors(
+  signal: AbortSignal,
+  githubRepository: string,
+): Promise<Contributor[]> {
   const contributors = new Map<number, Contributor>();
   let page = 1;
   let hasNextPage = true;
   while (hasNextPage) {
     const response = await fetch(
-      `https://api.github.com/repos/welkdock/welkUI/contributors?per_page=100&page=${page}`,
+      `https://api.github.com/repos/${githubRepository}/contributors?per_page=100&page=${page}`,
       { signal, headers: { Accept: "application/vnd.github+json" } },
     );
     if (!response.ok) {
@@ -65,13 +68,18 @@ type ContributorState =
   | { status: "success"; contributors: Contributor[] }
   | { status: "error"; message: string };
 
-export function Contributors() {
+export function Contributors({ edition = "react" }: { edition?: Edition }) {
+  return <EditionContributors key={edition} edition={edition} />;
+}
+
+function EditionContributors({ edition }: { edition: Edition }) {
+  const { repository, githubRepository } = editions[edition];
   const [state, setState] = useState<ContributorState>({ status: "loading" });
   const [attempt, setAttempt] = useState(0);
 
   useEffect(() => {
     const controller = new AbortController();
-    loadContributors(controller.signal).then(
+    loadContributors(controller.signal, githubRepository).then(
       (contributors) => {
         if (!controller.signal.aborted) {
           setState({ status: "success", contributors });
@@ -90,13 +98,17 @@ export function Contributors() {
       },
     );
     return () => controller.abort();
-  }, [attempt]);
+  }, [attempt, githubRepository]);
 
   return (
     <section className="section">
       <WelkBadge variant="success">BUILT TOGETHER</WelkBadge>
       <h1>The people behind the panels.</h1>
-      <p>Thank you to the contributors shaping WelkUI.</p>
+      <p>
+        {edition === "flutter"
+          ? "Thank you to the contributors shaping WelkUI Flutter for Android and iOS."
+          : "Thank you to the contributors shaping WelkUI."}
+      </p>
       {state.status === "loading" && (
         <p role="status">Loading contributors from GitHub...</p>
       )}
@@ -190,8 +202,16 @@ export function Contributors() {
         improvements count.
       </p>
       <p>
-        <a href={`${repository}/blob/main/CONTRIBUTING.md`}>
-          Read the contribution guide
+        <a
+          href={
+            edition === "flutter"
+              ? repository
+              : `${repository}/blob/main/CONTRIBUTING.md`
+          }
+        >
+          {edition === "flutter"
+            ? "Explore the Flutter project"
+            : "Read the contribution guide"}
         </a>{" "}
         / <a href={`${repository}/issues`}>Browse issues</a>
       </p>
