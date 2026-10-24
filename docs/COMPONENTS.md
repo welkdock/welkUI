@@ -558,6 +558,38 @@ fallback or variant resets the attempt. Responsive sources are removed while sho
 the fallback. Native `width`/`height` size the image; `style.objectFit` can override
 the default `cover`. Images are capped to their container width.
 
+### WelkQRCode
+
+Generates a locally rendered SVG QR code for an absolute HTTP or HTTPS URL. The
+QR generator is bundled with WelkUI, so consumers do not need to install it
+separately. The code remains black on white for reliable scanning, inside a
+comic-styled frame.
+
+```tsx
+import { WelkQRCode } from "@welkui/react";
+
+<WelkQRCode url="https://your-domain.com" />;
+
+<WelkQRCode
+  url="https://your-domain.com"
+  variant="card"
+  title="Visit our website"
+  subtitle="Scan to find out more."
+  cardColor="#ffda57"
+/>;
+
+<WelkQRCode url="https://your-domain.com" originalCode />;
+```
+
+`url` must include `http://` or `https://`; invalid values show an accessible
+error message instead of a QR code. The generated SVG has an accessible title
+identifying its URL. The default variant retains the original compact frame.
+Choose `variant="card"` to add an optional title and subtitle around the framed
+code. `cardColor` accepts a CSS background color and defaults to the theme paper
+color; the QR itself remains black on white for reliable scanning. Rounded
+modules are used by default for a comic look; set `originalCode` to render
+traditional square modules using the same encoded QR matrix.
+
 ### WelkRadio and WelkRadioGroup
 
 Radios have a slightly distorted circular border; checkboxes use a slightly

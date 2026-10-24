@@ -17,6 +17,17 @@ export default defineConfig({
             "utf8",
           ),
         });
+        this.emitFile({
+          type: "asset",
+          fileName: "licenses/QR-CODE-DEPENDENCIES.txt",
+          source: readFileSync(
+            new URL(
+              "./assets/licenses/QR-CODE-DEPENDENCIES.txt",
+              import.meta.url,
+            ),
+            "utf8",
+          ),
+        });
       },
     },
     {

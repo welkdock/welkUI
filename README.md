@@ -8,7 +8,7 @@
 
 <p>
   An open-source React + TypeScript UI library for comical minds.<br />
-  28 hand-drawn, accessible components for React and Next.js.
+  29 hand-drawn, accessible components for React and Next.js.
 </p>
 
 <p>
@@ -16,7 +16,7 @@
   <a href="./LICENSE"><img alt="MIT license" src="https://img.shields.io/badge/license-MIT-ffda57?labelColor=242424" /></a>
   <img alt="React 18 and 19" src="https://img.shields.io/badge/React-18%20%7C%2019-82caff?logo=react&labelColor=242424" />
   <img alt="TypeScript" src="https://img.shields.io/badge/TypeScript-ready-3057c4?logo=typescript&logoColor=white&labelColor=242424" />
-  <img alt="28 components" src="https://img.shields.io/badge/components-28-8ddd9b?labelColor=242424" />
+  <img alt="29 components" src="https://img.shields.io/badge/components-29-8ddd9b?labelColor=242424" />
   <a href="./CONTRIBUTING.md"><img alt="PRs welcome" src="https://img.shields.io/badge/PRs-welcome-ff8a80?labelColor=242424" /></a>
 </p>
 
@@ -78,7 +78,7 @@
 | **Forms & inputs**      | [`WelkInput`](https://ui.welkdock.com/components/WelkInput/), [`WelkCheckBox`](https://ui.welkdock.com/components/WelkCheckBox/), [`WelkRadio`](https://ui.welkdock.com/components/WelkRadio/), [`WelkRadioGroup`](https://ui.welkdock.com/components/WelkRadioGroup/), [`WelkSwitch`](https://ui.welkdock.com/components/WelkSwitch/), [`WelkDropDown`](https://ui.welkdock.com/components/WelkDropDown/), [`WelkDateInput`](https://ui.welkdock.com/components/WelkDateInput/), [`WelkDatePicker`](https://ui.welkdock.com/components/WelkDatePicker/), [`WelkTimePicker`](https://ui.welkdock.com/components/WelkTimePicker/), [`WelkRangeSlider`](https://ui.welkdock.com/components/WelkRangeSlider/), [`WelkOTPInput`](https://ui.welkdock.com/components/WelkOTPInput/), [`WelkAttachment`](https://ui.welkdock.com/components/WelkAttachment/) | Native, form-friendly controls with labels, validation and keyboard support |
 | **Navigation**          | [`WelkMenu`](https://ui.welkdock.com/components/WelkMenu/), [`WelkBreadCrumbs`](https://ui.welkdock.com/components/WelkBreadCrumbs/)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   | Comic navbars, nested/collapsible menus and breadcrumbs                     |
 | **Overlays & feedback** | [`WelkDialog`](https://ui.welkdock.com/components/WelkDialog/), [`WelkDrawer`](https://ui.welkdock.com/components/WelkDrawer/), [`WelkSnackBar`](https://ui.welkdock.com/components/WelkSnackBar/), [`WelkTooltip`](https://ui.welkdock.com/components/WelkTooltip/)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   | Modal dialogs, four-edge drawers, toasts and tooltips                       |
-| **Display**             | [`WelkAccordion`](https://ui.welkdock.com/components/WelkAccordion/), [`WelkAvatar`](https://ui.welkdock.com/components/WelkAvatar/), [`WelkBadge`](https://ui.welkdock.com/components/WelkBadge/), [`WelkCard`](https://ui.welkdock.com/components/WelkCard/), [`WelkDivider`](https://ui.welkdock.com/components/WelkDivider/), [`WelkImage`](https://ui.welkdock.com/components/WelkImage/), [`WelkSticker`](https://ui.welkdock.com/components/WelkSticker/), [`WelkStickerCard`](https://ui.welkdock.com/components/WelkStickerCard/)                                                                                                                                                                                                                                                                                                             | Cards, stickers, badges, avatars, images and disclosure                     |
+| **Display**             | [`WelkAccordion`](https://ui.welkdock.com/components/WelkAccordion/), [`WelkAvatar`](https://ui.welkdock.com/components/WelkAvatar/), [`WelkBadge`](https://ui.welkdock.com/components/WelkBadge/), [`WelkCard`](https://ui.welkdock.com/components/WelkCard/), [`WelkDivider`](https://ui.welkdock.com/components/WelkDivider/), [`WelkImage`](https://ui.welkdock.com/components/WelkImage/), [`WelkQRCode`](https://ui.welkdock.com/components/WelkQRCode/), [`WelkSticker`](https://ui.welkdock.com/components/WelkSticker/), [`WelkStickerCard`](https://ui.welkdock.com/components/WelkStickerCard/)                                                                                                                                                                                                                                             | Cards, stickers, badges, avatars, images, QR codes and disclosure           |
 
 Each name links to its live page with every variant, a prop table and
 copy-ready code. Detailed API notes live in [docs/COMPONENTS.md](./docs/COMPONENTS.md).
@@ -201,7 +201,7 @@ The website at **[ui.welkdock.com](https://ui.welkdock.com)** is built from
     <td width="50%"><img src="./docs/images/faq.png" alt="FAQ page with comic accordions" /></td>
   </tr>
   <tr>
-    <td align="center"><b>Visual variant gallery</b><br />Live previews of every variant, for all 28 components</td>
+    <td align="center"><b>Visual variant gallery</b><br />Live previews of every variant, for all 29 components</td>
     <td align="center"><b>FAQ</b><br />Short answers to common questions</td>
   </tr>
 </table>

@@ -2,6 +2,9 @@
 
 ## 0.1.0 - Unreleased
 
+- Add WelkQRCode to generate accessible SVG QR codes for valid HTTP(S) URLs,
+  bundling the QR generator in the library.
+
 - Rewrite the README with a banner, badges, website screenshots and a
   component overview; move detailed API notes to `docs/COMPONENTS.md`.
   Expand the contribution guide with an issue-linked workflow and add issue

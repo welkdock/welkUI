@@ -19,6 +19,7 @@ import {
   WelkInput,
   WelkMenu,
   WelkOTPInput,
+  WelkQRCode,
   WelkRadio,
   WelkRadioGroup,
   WelkRangeSlider,
@@ -129,6 +130,11 @@ export const catalogue = [
     name: "WelkOTPInput",
     info: "Single native input styled as digit boxes. Six digits by default; length is configurable.",
     code: '<WelkOTPInput label="Verification code" length={6}\n  onComplete={(code) => console.log(code)} />',
+  },
+  {
+    name: "WelkQRCode",
+    info: "Generate a scannable QR code for an absolute HTTP or HTTPS URL. The optional card variant adds a title, subtitle and customizable background.",
+    code: '<WelkQRCode url="https://ui.welkdock.com" />\n<WelkQRCode url="https://ui.welkdock.com" originalCode />',
   },
   {
     name: "WelkRadio",
@@ -355,6 +361,8 @@ export function ComponentDemo({ name }: { name: ComponentName }) {
       );
     case "WelkOTPInput":
       return <WelkOTPInput label="Verification code" length={6} />;
+    case "WelkQRCode":
+      return <WelkQRCode url="https://ui.welkdock.com" />;
     case "WelkRadio":
       return (
         <div className="stack">

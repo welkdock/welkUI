@@ -71,6 +71,7 @@
     "globals": "^16.5.0",
     "jsdom": "^27.0.0",
     "prettier": "^3.6.0",
+    "qrcode-generator": "^2.0.4",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
     "storybook": "^10.0.0",

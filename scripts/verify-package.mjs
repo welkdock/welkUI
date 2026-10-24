@@ -25,6 +25,7 @@ for (const path of [
   "dist/index.d.ts",
   "dist/styles.css",
   "dist/fonts/ShortStack-OFL.txt",
+  "dist/licenses/QR-CODE-DEPENDENCIES.txt",
   "LICENSE",
 ]) {
   assert.ok(files.has(path), `Package is missing ${path}`);
@@ -75,6 +76,7 @@ for (const name of [
   "WelkSwitch",
   "WelkDrawer",
   "WelkMenu",
+  "WelkQRCode",
 ]) {
   const base = `dist/components/${name}/${name}`;
   assert.ok((await read(`${base}.js`)).startsWith('"use client";'));
