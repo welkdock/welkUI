@@ -84,6 +84,13 @@ const expectedTitles = {
     "Controlled feedback",
     "Disabled",
   ],
+  WelkQRCode: [
+    "Website URL",
+    "Long URL",
+    "Invalid URL",
+    "Card",
+    "Original square modules",
+  ],
   WelkRadio: ["Shared-name options", "Disabled checked"],
   WelkRadioGroup: [
     "Uncontrolled selection",

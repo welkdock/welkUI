@@ -101,6 +101,13 @@ export const componentGuides = {
     "The slots are one native input, not separate fields. Paste, selection, autofill and keyboard editing work together; autoComplete defaults to one-time-code.",
     "onComplete signals a filled code, not a verified one. Submit to your verification service, show failures explicitly, and never treat a completed input as authentication.",
   ],
+  WelkQRCode: [
+    "Pass a complete URL beginning with http:// or https://. The component encodes the supplied string as-is and does not rewrite or shorten it.",
+    "The QR code stays black on white for scanning; the surrounding frame uses the WelkUI comic theme. Keep the code unobstructed and leave its white margin intact.",
+    "The QR is generated locally in the browser. No URL is sent to a third-party QR service.",
+    'Use variant="card" for a framed card layout. title and subtitle are optional, and cardColor accepts any CSS background color; without the card variant, the original appearance is unchanged.',
+    "Rounded modules are the default comic treatment and keep the encoded module positions unchanged. Set originalCode to render traditional square pixels.",
+  ],
   WelkRadio: [
     "Related options must share a name and have different values. The browser then handles exclusive selection and keyboard movement within the group.",
     "Provide a visible group label through a surrounding fieldset/legend, or use WelkRadioGroup. Individual option labels should be distinct and meaningful.",

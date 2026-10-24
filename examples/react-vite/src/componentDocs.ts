@@ -681,6 +681,44 @@ export const componentDocs = {
     ],
     native: `${inputNative} type, children, onChange, size, maxLength, minLength, pattern and inputMode are managed internally; use onValueChange.`,
   },
+  WelkQRCode: {
+    description:
+      "Generates a locally rendered SVG QR code for an absolute HTTP or HTTPS URL. The QR generator is bundled with WelkUI, so consumers do not need to install it separately. Invalid URLs show an accessible error instead.",
+    variants: [
+      "Valid absolute HTTP(S) URLs render a high-contrast, accessible SVG.",
+      "Invalid or unsupported URL schemes render an error message.",
+      "card: adds an optional heading, subtitle and customizable card background.",
+      "Comic rounded modules by default; originalCode restores square modules.",
+    ],
+    props: [
+      ["url", "string", "Required", "Absolute HTTP or HTTPS URL to encode."],
+      [
+        "variant",
+        '"default" | "card"',
+        '"default"',
+        "Use the original QR frame or present it inside a themed card.",
+      ],
+      ["title", "string", "Unset", "Optional heading in the card variant."],
+      [
+        "subtitle",
+        "string",
+        "Unset",
+        "Optional supporting text in the card variant.",
+      ],
+      [
+        "cardColor",
+        'CSSProperties["backgroundColor"]',
+        "Theme paper",
+        "Optional CSS background color for the card variant.",
+      ],
+      [
+        "originalCode",
+        "boolean",
+        "false",
+        "Use traditional square QR modules instead of comic rounded modules. Finder and timing patterns remain square in both modes.",
+      ],
+    ],
+  },
   WelkRadio: {
     description:
       "A labeled native radio for one mutually exclusive option. Give related radios the same name and different values. Control checked/onChange individually or use WelkRadioGroup for a labeled options collection.",

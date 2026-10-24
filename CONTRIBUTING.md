@@ -169,8 +169,9 @@ Checklist:
 - [ ] Start interactive implementations with `"use client"`. Barrels stay unmarked.
 - [ ] Prefer native elements (`button`, `input`, `dialog`…), forward refs and
       pass through native attributes and `className`.
-- [ ] Style with CSS Modules and existing theme tokens. No global resets and no
-      new runtime dependencies; React stays a peer dependency.
+- [ ] Style with CSS Modules and existing theme tokens. No global resets.
+      Bundle any added runtime package so consumers do not need to install it;
+      React stays a peer dependency.
 - [ ] Follow the comic look: solid ink borders, uneven corners, hard shadows,
       Short Stack font and reduced-motion-aware animations.
 - [ ] Add tests for behavior, keyboard interaction and accessibility.

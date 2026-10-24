@@ -20,6 +20,7 @@ import {
   WelkInput,
   WelkMenu,
   WelkOTPInput,
+  WelkQRCode,
   WelkRadio,
   WelkRadioGroup,
   WelkRangeSlider,
@@ -1012,6 +1013,56 @@ function examplesFor(name: ComponentName): Example[] {
           preview: (
             <WelkOTPInput label="Locked code" defaultValue="123456" disabled />
           ),
+        },
+      ];
+    case "WelkQRCode":
+      return [
+        {
+          title: "Website URL",
+          description:
+            "A complete HTTPS address renders as a high-contrast QR code.",
+          configuration: 'url="https://ui.welkdock.com"',
+          preview: <WelkQRCode url="https://ui.welkdock.com" />,
+        },
+        {
+          title: "Long URL",
+          description:
+            "Longer URLs produce denser codes. Keep the code large and unobstructed when displaying it.",
+          configuration:
+            'url="https://example.com/mission/briefing?team=welkui"',
+          preview: (
+            <WelkQRCode url="https://example.com/mission/briefing?team=welkui" />
+          ),
+        },
+        {
+          title: "Invalid URL",
+          description:
+            "URLs without an HTTP or HTTPS scheme show an accessible error.",
+          configuration: 'url="welkdock.com"',
+          preview: <WelkQRCode url="welkdock.com" />,
+        },
+        {
+          title: "Card",
+          description:
+            "Add a heading, supporting copy and themed card background around the framed code.",
+          configuration:
+            'variant="card" title="Visit WelkUI" subtitle="Scan to explore." cardColor="#ffda57"',
+          preview: (
+            <WelkQRCode
+              url="https://ui.welkdock.com"
+              variant="card"
+              title="Visit WelkUI"
+              subtitle="Scan to explore the component library."
+              cardColor="#ffda57"
+            />
+          ),
+        },
+        {
+          title: "Original square modules",
+          description:
+            "Set originalCode to render traditional square modules with the same encoded URL.",
+          configuration: "originalCode",
+          preview: <WelkQRCode url="https://ui.welkdock.com" originalCode />,
         },
       ];
     case "WelkRadio":

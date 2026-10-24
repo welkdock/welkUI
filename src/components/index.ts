@@ -27,3 +27,4 @@ export * from "./WelkSwitch";
 export * from "./WelkDrawer";
 export * from "./WelkMenu";
 export * from "./WelkTabs";
+export * from "./WelkQRCode";
