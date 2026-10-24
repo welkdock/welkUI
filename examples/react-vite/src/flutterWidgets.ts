@@ -8,7 +8,7 @@ export const flutterPreviewUrl = "https://welkdock.github.io/welkUI-flutter/";
 export const flutterPackage = {
   name: "welkui_flutter",
   // Update this when a new version is published to pub.dev.
-  version: "0.0.3",
+  version: "0.0.8",
   url: "https://pub.dev/packages/welkui_flutter",
   dart: "3.13.4",
   flutter: "3.35.0",
