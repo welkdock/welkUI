@@ -634,6 +634,7 @@ p {
 }
 
 .phoneScreen {
+  container-type: inline-size;
   position: relative;
   display: flex;
   flex-direction: column;
@@ -647,11 +648,12 @@ p {
 
 .phoneStatusBar {
   display: grid;
-  grid-template-columns: 1fr auto 1fr;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  column-gap: 6px;
   align-items: center;
   flex: none;
   height: 54px;
-  padding: 0 24px 0 30px;
+  padding: 0 clamp(10px, 6cqw, 24px);
   color: #000;
   font-family:
     -apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, sans-serif;
@@ -660,8 +662,8 @@ p {
 }
 
 .dynamicIsland {
-  width: 108px;
-  height: 31px;
+  width: clamp(48px, 24cqw, 84px);
+  height: 25px;
   border-radius: 20px;
   background: #000;
 }
@@ -670,7 +672,7 @@ p {
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  gap: 5px;
+  gap: 3px;
   fill: currentColor;
 }
 
@@ -737,12 +739,7 @@ p {
   }
   .phoneStatusBar {
     height: 46px;
-    padding: 0 18px 0 22px;
     font-size: 13px;
-  }
-  .dynamicIsland {
-    width: 84px;
-    height: 25px;
   }
 }
 

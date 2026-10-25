@@ -234,7 +234,11 @@ changed widget APIs there.
 
 Each Flutter widget page embeds the Flutter example app (built with
 `flutter build web`) in a phone frame. The app loads only after the reader
-clicks **Run live preview**, so the website stays light. Set the deployed app URL
+clicks **Run live preview**, so the website stays light. The iframe uses a
+390-CSS-pixel logical viewport, scaled to the available screen width. Its logical
+height follows the frame height at the same scale, so shrinking the mockup
+does not force Flutter into an unrealistically narrow layout.
+Set the deployed app URL
 in `flutterPreviewUrl` in
 [flutterWidgets.ts](./examples/react-vite/src/flutterWidgets.ts). It must use
 `https` (`http` is allowed only for `localhost`). While it is empty, pages show a

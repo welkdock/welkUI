@@ -15,6 +15,13 @@ import { getSeo, seoRoutes } from "../../examples/react-vite/src/seo";
 beforeEach(() => {
   window.history.replaceState(null, "", "/");
   vi.spyOn(window, "scrollTo").mockImplementation(() => {});
+  vi.stubGlobal(
+    "ResizeObserver",
+    class {
+      observe() {}
+      disconnect() {}
+    },
+  );
 });
 
 afterEach(() => vi.unstubAllGlobals());
@@ -319,6 +326,44 @@ describe("Website editions", () => {
 });
 
 describe("Flutter live preview", () => {
+  it("scales a phone-sized viewport to fit the frame and responds to resizing", () => {
+    let onResize: ResizeObserverCallback | undefined;
+    const observer = {
+      observe: vi.fn(),
+      unobserve: vi.fn(),
+      disconnect: vi.fn(),
+    };
+    vi.stubGlobal(
+      "ResizeObserver",
+      vi.fn(function (callback: ResizeObserverCallback) {
+        onResize = callback;
+        return observer;
+      }),
+    );
+    const bounds = vi
+      .spyOn(HTMLElement.prototype, "getBoundingClientRect")
+      .mockReturnValue(new DOMRect(0, 0, 260, 520));
+    const view = render(
+      <FlutterPreview name="WelkDateInput" previewRoute="/date-input" />,
+    );
+    fireEvent.click(screen.getByRole("button", { name: /Run live preview/ }));
+    const frame = screen.getByTitle("WelkDateInput live mobile preview");
+    expect(frame).toHaveStyle({
+      width: "390px",
+      height: "150%",
+      transform: `scale(${260 / 390})`,
+      transformOrigin: "top left",
+    });
+    bounds.mockReturnValue(new DOMRect(0, 0, 312, 624));
+    act(() => onResize?.([], observer));
+    expect(frame).toHaveStyle({ height: "125%", transform: "scale(0.8)" });
+    expect(observer.observe).toHaveBeenCalledWith(
+      document.querySelector(".phoneViewport"),
+    );
+    view.unmount();
+    expect(observer.disconnect).toHaveBeenCalledOnce();
+  });
+
   it("builds embed URLs with the query before the hash route", () => {
     expect(getPreviewUrl("https://example.com/app/", "/button")).toBe(
       "https://example.com/app/?embed=1#/button",
