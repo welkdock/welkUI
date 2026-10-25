@@ -12,7 +12,7 @@ import {
 } from "./flutterWidgets";
 
 export function FlutterComponents({ name }: { name?: string }) {
-  const widget = name ? getFlutterWidget(name) : flutterWidgets[0];
+  const widget = getFlutterWidget(name ?? "WelkButton");
   return (
     <>
       <h1>Widget Field Guide</h1>

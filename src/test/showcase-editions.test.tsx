@@ -5,7 +5,11 @@ import { App } from "../../examples/react-vite/src/App";
 import { Contributors } from "../../examples/react-vite/src/Contributors";
 import { editions, editionPath } from "../../examples/react-vite/src/editions";
 import { FlutterPreview } from "../../examples/react-vite/src/FlutterPreview";
-import { getPreviewUrl } from "../../examples/react-vite/src/flutterWidgets";
+import {
+  flutterPackage,
+  flutterWidgets,
+  getPreviewUrl,
+} from "../../examples/react-vite/src/flutterWidgets";
 import { getSeo, seoRoutes } from "../../examples/react-vite/src/seo";
 
 beforeEach(() => {
@@ -74,6 +78,9 @@ describe("Website editions", () => {
     expect(
       screen.queryByRole("link", { name: "Get it on pub.dev" }),
     ).not.toBeInTheDocument();
+    expect(
+      screen.getByText(`v${flutterPackage.version} on pub.dev`),
+    ).toBeVisible();
     expect(document.querySelector("iframe")).toBeNull();
     expect(document.querySelector(".editionSwitcher")).not.toHaveAttribute(
       "open",
@@ -129,6 +136,14 @@ describe("Website editions", () => {
   });
 
   it("maps counterpart sections and shared components between editions", () => {
+    for (const { name } of flutterWidgets) {
+      expect(editionPath(`/components/${name}/`, "flutter")).toBe(
+        `/flutter/components/${name}/`,
+      );
+      expect(editionPath(`/flutter/components/${name}/`, "react")).toBe(
+        `/components/${name}/`,
+      );
+    }
     expect(editionPath("/components/WelkSwitch/", "flutter")).toBe(
       "/flutter/components/WelkSwitch/",
     );
@@ -237,6 +252,60 @@ describe("Website editions", () => {
     expect(getSeo("/flutter/components/WelkButton/").indexable).toBe(true);
     expect(getSeo("/flutter/components/WelkModal/").indexable).toBe(false);
   });
+
+  it("lists all 30 widget destinations with unique preview routes", () => {
+    expect(flutterWidgets).toHaveLength(30);
+    expect(new Set(flutterWidgets.map(({ name }) => name)).size).toBe(30);
+    expect(
+      new Set(flutterWidgets.map(({ previewRoute }) => previewRoute)).size,
+    ).toBe(30);
+    render(<App path="/flutter/components/" />);
+    const navigation = screen.getByRole("navigation", {
+      name: "Component list",
+    });
+    for (const { name } of flutterWidgets) {
+      expect(within(navigation).getByRole("link", { name })).toHaveAttribute(
+        "href",
+        `/flutter/components/${name}/`,
+      );
+    }
+  });
+
+  it.each(flutterWidgets)(
+    "renders $name documentation and its lazy preview",
+    (widget) => {
+      const path = `/flutter/components/${widget.name}/`;
+      expect(seoRoutes).toContain(path);
+      expect(getSeo(path).title).toContain(widget.name);
+      render(<App path={path} />);
+      expect(screen.getByRole("heading", { name: widget.name })).toBeVisible();
+      expect(
+        screen.getByRole("heading", { name: "Widget Field Guide" }),
+      ).toBeVisible();
+      expect(
+        screen.getByRole("heading", { name: "Usage notes and accessibility" }),
+      ).toBeVisible();
+      const code = document.querySelectorAll(".flutterDocs pre")[1];
+      expect(code).toHaveTextContent(widget.code.replace(/\s+/g, " ").trim());
+      const table = screen.getByRole("table", {
+        name: `${widget.name} parameter reference`,
+      });
+      expect(within(table).getAllByRole("row")).toHaveLength(
+        widget.parameters.length + 1,
+      );
+      for (const [parameter] of widget.parameters) {
+        expect(
+          within(table).getByRole("rowheader", { name: parameter }),
+        ).toBeVisible();
+      }
+      expect(document.querySelector("iframe")).toBeNull();
+      fireEvent.click(screen.getByRole("button", { name: /Run live preview/ }));
+      expect(document.querySelector("iframe")).toHaveAttribute(
+        "src",
+        `https://welkdock.github.io/welkUI-flutter/?embed=1#${widget.previewRoute}`,
+      );
+    },
+  );
 
   it("shows a Flutter-aware not-found page for unknown routes", () => {
     window.history.replaceState(null, "", "/flutter/components/Unknown/");
