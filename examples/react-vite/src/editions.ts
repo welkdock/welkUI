@@ -1,7 +1,7 @@
 import reactLogo from "../../../assets/images/react.svg.webp";
 import flutterLogo from "../../../assets/images/flutter.svg.webp";
 import { catalogue } from "./catalogue";
-import { getFlutterWidget } from "./flutterWidgets";
+import { flutterWidgets, getFlutterWidget } from "./flutterWidgets";
 import { faqs, repository } from "./siteContent";
 
 export const editions = {
@@ -22,7 +22,7 @@ export const editions = {
     faqs: [
       [
         "What is WelkUI Flutter?",
-        "The mobile edition of WelkUI: a Flutter widget library for comic-inspired Android and iOS interfaces. WelkButton, WelkSwitch, WelkCard and WelkMenu are available now.",
+        `The mobile edition of WelkUI: ${flutterWidgets.length} comic-inspired widgets for Android and iOS, including actions, forms, date and time pickers, navigation, overlays, stickers and QR codes.`,
       ],
       [
         "Which platforms does Flutter Edition target?",

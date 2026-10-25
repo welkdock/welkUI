@@ -3,6 +3,7 @@ import { renderToString } from "react-dom/server";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { App } from "../../examples/react-vite/src/App";
 import { catalogue } from "../../examples/react-vite/src/catalogue";
+import { flutterWidgets } from "../../examples/react-vite/src/flutterWidgets";
 import {
   interceptLinkClicks,
   normalizePath,
@@ -31,7 +32,9 @@ beforeEach(() => {
 
 describe("showcase SEO", () => {
   it("lists every page once with unique titles, descriptions and canonicals", () => {
-    expect(seoRoutes).toHaveLength(catalogue.length + 12);
+    expect(seoRoutes).toHaveLength(
+      catalogue.length + flutterWidgets.length + 8,
+    );
     const metadata = seoRoutes.map(getSeo);
     for (const key of ["title", "description", "canonical"] as const)
       expect(new Set(metadata.map((seo) => seo[key])).size).toBe(

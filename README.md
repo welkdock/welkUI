@@ -225,6 +225,8 @@ lives here; contributors are loaded from that repository. The package is publish
 on pub.dev as [welkui_flutter](https://pub.dev/packages/welkui_flutter). Widget
 docs (Dart usage, constructor parameters and notes) and the package version are
 defined in [flutterWidgets.ts](./examples/react-vite/src/flutterWidgets.ts).
+The field guide covers all 30 widgets in `welkui_flutter` 0.1.5, including
+forms, pickers, navigation, overlays, images, stickers and QR codes.
 After publishing a new release, update `flutterPackage.version` and any
 changed widget APIs there.
 
@@ -232,7 +234,11 @@ changed widget APIs there.
 
 Each Flutter widget page embeds the Flutter example app (built with
 `flutter build web`) in a phone frame. The app loads only after the reader
-clicks **Run live preview**, so the website stays light. Set the deployed app URL
+clicks **Run live preview**, so the website stays light. The iframe uses a
+390-CSS-pixel logical viewport, scaled to the available screen width. Its logical
+height follows the frame height at the same scale, so shrinking the mockup
+does not force Flutter into an unrealistically narrow layout.
+Set the deployed app URL
 in `flutterPreviewUrl` in
 [flutterWidgets.ts](./examples/react-vite/src/flutterWidgets.ts). It must use
 `https` (`http` is allowed only for `localhost`). While it is empty, pages show a
@@ -240,12 +246,42 @@ in `flutterPreviewUrl` in
 
 The website loads `<flutterPreviewUrl>?embed=1#/<route>`:
 
-| Widget     | Route     |
-| ---------- | --------- |
-| WelkButton | `/button` |
-| WelkSwitch | `/switch` |
-| WelkCard   | `/card`   |
-| WelkMenu   | `/menu`   |
+| Widget          | Route           |
+| --------------- | --------------- |
+| WelkAccordion   | `/accordion`    |
+| WelkAttachment  | `/attachment`   |
+| WelkAvatar      | `/avatar`       |
+| WelkBadge       | `/badge`        |
+| WelkBreadCrumbs | `/breadcrumbs`  |
+| WelkButton      | `/button`       |
+| WelkCard        | `/card`         |
+| WelkCheckBox    | `/checkbox`     |
+| WelkDateInput   | `/date-input`   |
+| WelkDatePicker  | `/date-picker`  |
+| WelkDialog      | `/dialog`       |
+| WelkDivider     | `/divider`      |
+| WelkDrawer      | `/drawer`       |
+| WelkDropDown    | `/dropdown`     |
+| WelkIconButton  | `/icon-button`  |
+| WelkImage       | `/image`        |
+| WelkInput       | `/input`        |
+| WelkMenu        | `/menu`         |
+| WelkOTPInput    | `/otp-input`    |
+| WelkQRCode      | `/qr-code`      |
+| WelkRadio       | `/radio`        |
+| WelkRadioGroup  | `/radio-group`  |
+| WelkRangeSlider | `/range-slider` |
+| WelkSnackBar    | `/snackbar`     |
+| WelkSticker     | `/sticker`      |
+| WelkStickerCard | `/sticker-card` |
+| WelkSwitch      | `/switch`       |
+| WelkTabs        | `/tabs`         |
+| WelkTimePicker  | `/time-picker`  |
+| WelkTooltip     | `/tooltip`      |
+
+Keep these routes in sync with `example/lib/widget_catalog.dart` in the
+Flutter repository when adding widgets. This catalogue also drives the website's
+navigation, edition switching, SEO routes and pre-rendered pages.
 
 In the example app, use hash-based routes and read
 `Uri.base.queryParameters['embed'] == '1'` to hide the app's own navigation.
