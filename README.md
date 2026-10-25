@@ -225,7 +225,7 @@ lives here; contributors are loaded from that repository. The package is publish
 on pub.dev as [welkui_flutter](https://pub.dev/packages/welkui_flutter). Widget
 docs (Dart usage, constructor parameters and notes) and the package version are
 defined in [flutterWidgets.ts](./examples/react-vite/src/flutterWidgets.ts).
-The field guide covers all 30 widgets in `welkui_flutter` 0.1.2, including
+The field guide covers all 30 widgets in `welkui_flutter` 0.1.5, including
 forms, pickers, navigation, overlays, images, stickers and QR codes.
 After publishing a new release, update `flutterPackage.version` and any
 changed widget APIs there.
