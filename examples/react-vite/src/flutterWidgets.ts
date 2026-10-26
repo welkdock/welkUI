@@ -1657,9 +1657,8 @@ export function getFlutterWidget(name: string | undefined) {
 }
 
 /**
- * Builds the iframe URL. The app reads `?embed=1` from Uri.base to hide its
- * own navigation, and opens the widget route from the hash, e.g.
- * https://example.com/app/?embed=1#/button
+ * Builds the preview URL with the widget route in the hash, e.g.
+ * https://example.com/app/#/button. Keeps the demo navigation and theme toggle.
  */
 export function getPreviewUrl(baseUrl: string, previewRoute: string) {
   let url: URL;
@@ -1672,6 +1671,5 @@ export function getPreviewUrl(baseUrl: string, previewRoute: string) {
   if (url.protocol !== "https:" && !(url.protocol === "http:" && local))
     return null;
   url.hash = "";
-  url.searchParams.set("embed", "1");
   return `${url.href}#${previewRoute}`;
 }
