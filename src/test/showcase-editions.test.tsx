@@ -298,8 +298,26 @@ describe("Website editions", () => {
         name: `${widget.name} parameter reference`,
       });
       expect(within(table).getAllByRole("row")).toHaveLength(
-        widget.parameters.length + 1,
+        widget.parameters.length + 2,
       );
+      const darkModeRow = within(table).getByRole("row", {
+        name: /^overRideDarkMode /,
+      });
+      expect(
+        within(darkModeRow).getByRole("rowheader", {
+          name: "overRideDarkMode",
+        }),
+      ).toBeVisible();
+      expect(
+        within(darkModeRow)
+          .getAllByRole("cell")
+          .map((cell) => cell.textContent),
+      ).toEqual([
+        "bool?",
+        "null",
+        "Force dark (true) or light (false) mode. Null inherits the theme preference.",
+      ]);
+      expect(screen.getByRole("heading", { name: "Dark mode" })).toBeVisible();
       for (const [parameter] of widget.parameters) {
         expect(
           within(table).getByRole("rowheader", { name: parameter }),

@@ -31,6 +31,45 @@ export const flutterThemeCode = `WelkTheme(
   ),
 )`;
 
+export const flutterDarkModeCode = statefulExample(
+  "DarkMode",
+  "WelkThemeData _theme = const WelkThemeData(darkMode: false);",
+  `WelkTheme(
+      data: _theme,
+      child: MaterialApp(
+        theme: ThemeData.light(),
+        darkTheme: ThemeData.dark(),
+        themeMode: _theme.darkMode == true ? ThemeMode.dark : ThemeMode.light,
+        home: Scaffold(
+          body: Center(
+            child: WelkSwitch(
+              label: 'Dark mode',
+              value: _theme.darkMode == true,
+              onChanged: (enabled) {
+                setState(() {
+                  _theme = _theme.copyWith(darkMode: enabled);
+                });
+              },
+            ),
+          ),
+        ),
+      ),
+    )`,
+);
+
+export const flutterDarkModeOverrideCode = `WelkButton(
+  overRideDarkMode: true,
+  variant: WelkButtonVariant.secondary,
+  onPressed: () {},
+  child: const Text('Always dark'),
+)
+
+WelkButton(
+  overRideDarkMode: false,
+  onPressed: () {},
+  child: const Text('Always light'),
+)`;
+
 export const flutterFontCode = `const Text(
   'Made with WelkUI',
   style: TextStyle(
