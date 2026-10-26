@@ -2,6 +2,8 @@ import { WelkAccordion, WelkBadge, WelkMenu } from "@welkui/react";
 import { Code } from "./code";
 import { FlutterPreview } from "./FlutterPreview";
 import {
+  flutterDarkModeCode,
+  flutterDarkModeOverrideCode,
   flutterFontCode,
   flutterImport,
   flutterInstall,
@@ -38,6 +40,14 @@ export function FlutterComponents({ name }: { name?: string }) {
               <WelkBadge variant="info">LIVE MOBILE PREVIEW</WelkBadge>
               <h2 id="component-title">{widget.name}</h2>
               <p>{widget.description}</p>
+              <p>
+                Every WelkUI Flutter widget supports dark mode, including this
+                one.{" "}
+                <a href="#flutter-dark-mode">
+                  Learn how to enable or disable it
+                </a>
+                .
+              </p>
             </div>
             <aside
               className="flutterDevice"
@@ -91,6 +101,61 @@ export function FlutterComponents({ name }: { name?: string }) {
                   <li key={note}>{note}</li>
                 ))}
               </ul>
+              <h3 id="flutter-dark-mode">Dark mode</h3>
+              <p>
+                Control all widgets, pickers, and overlays with{" "}
+                <code>WelkThemeData.darkMode</code>: set it to <code>true</code>{" "}
+                to enable dark mode or <code>false</code> to disable it. When
+                left <code>null</code> (the default), widgets follow
+                Flutter&apos;s <code>ThemeData.brightness</code>. To follow the
+                device setting, provide light and dark themes on{" "}
+                <code>MaterialApp</code> and use <code>ThemeMode.system</code>.
+              </p>
+              <p>
+                Place <code>WelkTheme</code> above <code>MaterialApp</code> so
+                open popups and overlays also follow global updates. Rebuild it
+                with <code>data.copyWith(darkMode: true)</code> or{" "}
+                <code>data.copyWith(darkMode: false)</code> to switch modes.
+                This example also switches the Material theme to keep the
+                app&apos;s scaffold and other Material widgets in sync:
+              </p>
+              <Code language="Dart" theme="dracula">
+                {`${flutterImport}\n\n${flutterDarkModeCode}`}
+              </Code>
+              <h4>Override a widget</h4>
+              <p>
+                Set <code>overRideDarkMode: true</code> to force dark mode or{" "}
+                <code>overRideDarkMode: false</code> to force light mode,
+                regardless of the global setting. Omit it (or pass{" "}
+                <code>null</code>) to inherit. Container overrides flow into
+                nested WelkUI widgets, and dialog, drawer, and snackbar show
+                functions accept the same override. Local themes are carried
+                into overlays when opened.
+              </p>
+              <Code language="Dart" theme="dracula">
+                {flutterDarkModeOverrideCode}
+              </Code>
+              <h4>Dark palette and appearance</h4>
+              <p>
+                Neutral surfaces, text, and icons adapt automatically. Semantic
+                variant fills receive a 10% black tint, with black borders and
+                whitish-gray hard shadows. Secondary buttons use charcoal-gray
+                surfaces; ghost buttons stay transparent. QR codes keep a light
+                backing and dark modules for scanning. Built-in avatar portraits
+                switch to white assets in dark mode; custom icons and profile
+                images are not filtered.
+              </p>
+              <p>
+                Customize the palette through <code>WelkThemeData</code> using{" "}
+                <code>darkPaper</code>, <code>darkMuted</code>,{" "}
+                <code>darkInk</code>, <code>darkOutline</code>,{" "}
+                <code>darkShadow</code>, <code>darkButtonTint</code>, and{" "}
+                <code>darkFocus</code>. See the{" "}
+                <a href="https://github.com/welkdock/welkUI-flutter#global-dark-mode">
+                  Flutter README&apos;s global dark mode guide
+                </a>{" "}
+                for the package reference.
+              </p>
               <h3>Constructor parameters</h3>
               <p className="finePrint">
                 Required parameters are marked in the default column. Other
@@ -114,6 +179,19 @@ export function FlutterComponents({ name }: { name?: string }) {
                     </tr>
                   </thead>
                   <tbody>
+                    <tr>
+                      <th scope="row">
+                        <code>overRideDarkMode</code>
+                      </th>
+                      <td>
+                        <code>bool?</code>
+                      </td>
+                      <td>null</td>
+                      <td>
+                        Force dark (true) or light (false) mode. Null inherits
+                        the theme preference.
+                      </td>
+                    </tr>
                     {widget.parameters.map(
                       ([parameter, type, defaultValue, description]) => (
                         <tr key={parameter}>
