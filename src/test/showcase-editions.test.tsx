@@ -327,7 +327,7 @@ describe("Website editions", () => {
       fireEvent.click(screen.getByRole("button", { name: /Run live preview/ }));
       expect(document.querySelector("iframe")).toHaveAttribute(
         "src",
-        `https://welkdock.github.io/welkUI-flutter/?embed=1#${widget.previewRoute}`,
+        `https://welkdock.github.io/welkUI-flutter/#${widget.previewRoute}`,
       );
     },
   );
@@ -382,15 +382,15 @@ describe("Flutter live preview", () => {
     expect(observer.disconnect).toHaveBeenCalledOnce();
   });
 
-  it("builds embed URLs with the query before the hash route", () => {
+  it("builds preview URLs without adding an embed flag and preserves existing queries", () => {
     expect(getPreviewUrl("https://example.com/app/", "/button")).toBe(
-      "https://example.com/app/?embed=1#/button",
+      "https://example.com/app/#/button",
     );
     expect(getPreviewUrl("https://example.com/app/?v=2#/old", "/card")).toBe(
-      "https://example.com/app/?v=2&embed=1#/card",
+      "https://example.com/app/?v=2#/card",
     );
     expect(getPreviewUrl("http://localhost:8080", "/switch")).toBe(
-      "http://localhost:8080/?embed=1#/switch",
+      "http://localhost:8080/#/switch",
     );
     expect(getPreviewUrl("http://example.com/", "/button")).toBeNull();
     expect(getPreviewUrl("javascript:alert(1)", "/button")).toBeNull();
@@ -418,16 +418,13 @@ describe("Flutter live preview", () => {
     expect(document.querySelector("iframe")).toBeNull();
     fireEvent.click(screen.getByRole("button", { name: /Run live preview/ }));
     const frame = screen.getByTitle("WelkSwitch live mobile preview");
-    expect(frame).toHaveAttribute(
-      "src",
-      "https://example.com/app/?embed=1#/switch",
-    );
+    expect(frame).toHaveAttribute("src", "https://example.com/app/#/switch");
     expect(frame).toHaveAttribute("sandbox", "allow-scripts allow-same-origin");
     expect(screen.getByRole("status")).toHaveTextContent("Starting");
     fireEvent.load(frame);
     expect(screen.queryByRole("status")).not.toBeInTheDocument();
     expect(
       screen.getByRole("link", { name: "Open preview in a new tab" }),
-    ).toHaveAttribute("href", "https://example.com/app/?embed=1#/switch");
+    ).toHaveAttribute("href", "https://example.com/app/#/switch");
   });
 });
