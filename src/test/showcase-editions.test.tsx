@@ -35,6 +35,12 @@ function choose(edition: "React" | "Flutter") {
 describe("Website editions", () => {
   it("defaults to React and switches home content, icons, links and footer", () => {
     render(<App />);
+    const npmLink = screen.getByRole("link", { name: "Get it on npm" });
+    expect(npmLink).toHaveAttribute(
+      "href",
+      "https://www.npmjs.com/package/@welkui/react",
+    );
+    expect(npmLink.querySelector("img")).toHaveAttribute("width", "36");
     const header = screen.getByRole("banner");
     expect(
       within(header).getByLabelText("Choose edition: React Edition"),
@@ -59,6 +65,9 @@ describe("Website editions", () => {
     ).toHaveAttribute("src", editions.react.icon);
     choose("Flutter");
     expect(window.location.pathname).toBe("/flutter/");
+    expect(
+      screen.queryByRole("link", { name: "Get it on npm" }),
+    ).not.toBeInTheDocument();
     expect(
       screen.getByText(/An open-source mobile UI library for comical minds/),
     ).toBeVisible();
