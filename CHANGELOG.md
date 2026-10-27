@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.0.0 - 2026-10-27
+
+- Set the npm homepage to https://ui.welkdock.com.
+- Simplify the README to installation, quick start, theming, the component
+  overview and licensing, with links to the full documentation.
+
 ## 0.1.0 - Unreleased
 
 - Add WelkQRCode to generate accessible SVG QR codes for valid HTTP(S) URLs,

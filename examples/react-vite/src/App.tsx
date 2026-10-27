@@ -15,6 +15,7 @@ import { getComponentDocs } from "./componentDocs";
 import { componentGuides } from "./componentGuides";
 import { VariantGallery } from "./VariantGallery";
 import githubLogo from "../../../assets/images/github.svg";
+import npmLogo from "../../../assets/images/npm.svg";
 import welkuiLogo from "../../../assets/images/welkui-logo.png";
 import {
   getServerPath,
@@ -70,6 +71,15 @@ function Home({ edition }: { edition: Edition }) {
             >
               {flutter ? "Explore mobile widgets" : "Explore components"}
             </WelkButton>
+            {!flutter && (
+              <a
+                className="githubLink"
+                href="https://www.npmjs.com/package/@welkui/react"
+              >
+                <img src={npmLogo} alt="" width={36} height={14} />
+                Get it on npm
+              </a>
+            )}
             <a className="githubLink" href={repository}>
               <img src={githubLogo} alt="" width={24} height={24} />
               Open source on GitHub
