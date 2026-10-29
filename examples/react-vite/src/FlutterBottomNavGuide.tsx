@@ -351,17 +351,15 @@ export function FlutterBottomNavInstall() {
     <>
       <h3>Availability and installation</h3>
       <p>
-        Bottom navigation is introduced in the <strong>0.1.9 API</strong>.
-        Add the dependency below to your app&apos;s pubspec.yaml, then run{" "}
+        Bottom navigation is introduced in the <strong>0.1.9 API</strong>. Add
+        the dependency below to your app&apos;s pubspec.yaml, then run{" "}
         <code>flutter pub get</code>.
       </p>
       <Code language="YAML" theme="dracula">{`dependencies:
   flutter:
     sdk: flutter
   welkui_flutter: ^0.1.9`}</Code>
-      <p>
-        No React package or stylesheet is needed.
-      </p>
+      <p>No React package or stylesheet is needed.</p>
     </>
   );
 }
