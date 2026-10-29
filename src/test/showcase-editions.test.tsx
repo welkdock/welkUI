@@ -2,6 +2,7 @@ import { act, fireEvent, render, screen, within } from "@testing-library/react";
 import { renderToString } from "react-dom/server";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { App } from "../../examples/react-vite/src/App";
+import { catalogue } from "../../examples/react-vite/src/catalogue";
 import { Contributors } from "../../examples/react-vite/src/Contributors";
 import { editions, editionPath } from "../../examples/react-vite/src/editions";
 import { FlutterPreview } from "../../examples/react-vite/src/FlutterPreview";
@@ -15,6 +16,14 @@ import { getSeo, seoRoutes } from "../../examples/react-vite/src/seo";
 beforeEach(() => {
   window.history.replaceState(null, "", "/");
   vi.spyOn(window, "scrollTo").mockImplementation(() => {});
+  vi.stubGlobal(
+    "matchMedia",
+    vi.fn().mockReturnValue({
+      matches: false,
+      addEventListener: vi.fn(),
+      removeEventListener: vi.fn(),
+    }),
+  );
   vi.stubGlobal(
     "ResizeObserver",
     class {
@@ -33,6 +42,88 @@ function choose(edition: "React" | "Flutter") {
 }
 
 describe("Website editions", () => {
+  it.each(["/", "/flutter/"])(
+    "invites project submissions before the final call to action on %s",
+    (path) => {
+      render(<App path={path} />);
+      const spotlight = screen.getByRole("region", {
+        name: "Your project deserves the spotlight.",
+      });
+      expect(spotlight).toHaveTextContent(
+        "for a chance to be featured in the showcase on our official website",
+      );
+      expect(spotlight).toHaveTextContent("contact@welkdock.com");
+      const link = within(spotlight).getByRole("link", {
+        name: "Share your project",
+      });
+      const mail = new URL(link.getAttribute("href")!);
+      expect(mail.protocol).toBe("mailto:");
+      expect(mail.pathname).toBe("contact@welkdock.com");
+      expect(mail.searchParams.get("subject")).toBe(
+        "Built with WelkUI — showcase submission",
+      );
+      expect(spotlight.nextElementSibling).toHaveTextContent(
+        "THE STORY CONTINUES",
+      );
+    },
+  );
+
+  it("shows three looping app recordings in shared phone frames on Flutter home only", () => {
+    const view = render(<App path="/flutter/" />);
+    const section = screen.getByRole("region", {
+      name: "Mobile widgets. A new chapter.",
+    });
+    expect(section.querySelector(".previewGrid")).toBeNull();
+    expect(section.querySelectorAll(".flutterRecording")).toHaveLength(3);
+    for (const name of ["WelkButton", "WelkDrawer", "WelkAccordion"]) {
+      const video = within(section).getByLabelText(
+        `${name} app screen recording`,
+      );
+      expect(video).toHaveAttribute("autoplay");
+      expect(video).toHaveAttribute("loop");
+      expect(video).toHaveAttribute("playsinline");
+      expect(video).toHaveAttribute("controls");
+      expect((video as HTMLVideoElement).muted).toBe(true);
+      expect(video).toHaveAttribute(
+        "src",
+        expect.stringContaining(`${name}.web.mp4`),
+      );
+      expect(video.closest(".phoneFrame")).toHaveClass("phoneFrameRecording");
+      expect(
+        within(section).getByRole("link", { name: `Explore ${name}` }),
+      ).toHaveAttribute("href", `/flutter/components/${name}/`);
+    }
+    expect(section.querySelector(".phoneStatusBar")).toBeNull();
+    view.unmount();
+    render(<App path="/" />);
+    expect(document.querySelector("video")).toBeNull();
+    expect(document.querySelector(".previewGrid")).not.toBeNull();
+  });
+
+  it("leaves recordings paused for reduced motion and surfaces playback failures", () => {
+    vi.mocked(window.matchMedia).mockReturnValue({
+      matches: true,
+      media: "(prefers-reduced-motion: reduce)",
+      onchange: null,
+      addListener: vi.fn(),
+      removeListener: vi.fn(),
+      addEventListener: vi.fn(),
+      removeEventListener: vi.fn(),
+      dispatchEvent: vi.fn(),
+    });
+    render(<App path="/flutter/" />);
+    const video = screen.getByLabelText("WelkButton app screen recording");
+    expect(video).not.toHaveAttribute("autoplay");
+    expect(video).toHaveAttribute("controls");
+    fireEvent.error(video);
+    expect(screen.getByRole("alert")).toHaveTextContent(
+      "This recording could not be loaded.",
+    );
+    expect(
+      screen.getByRole("link", { name: "Try the WelkButton live preview" }),
+    ).toHaveAttribute("href", "/flutter/components/WelkButton/");
+  });
+
   it("defaults to React and switches home content, icons, links and footer", () => {
     render(<App />);
     const npmLink = screen.getByRole("link", { name: "Get it on npm" });
@@ -157,7 +248,9 @@ describe("Website editions", () => {
         `/flutter/components/${name}/`,
       );
       expect(editionPath(`/flutter/components/${name}/`, "react")).toBe(
-        `/components/${name}/`,
+        catalogue.some((item) => item.name === name)
+          ? `/components/${name}/`
+          : "/components/",
       );
     }
     expect(editionPath("/components/WelkSwitch/", "flutter")).toBe(
@@ -269,12 +362,12 @@ describe("Website editions", () => {
     expect(getSeo("/flutter/components/WelkModal/").indexable).toBe(false);
   });
 
-  it("lists all 30 widget destinations with unique preview routes", () => {
-    expect(flutterWidgets).toHaveLength(30);
-    expect(new Set(flutterWidgets.map(({ name }) => name)).size).toBe(30);
+  it("lists all 31 widget destinations with unique preview routes", () => {
+    expect(flutterWidgets).toHaveLength(31);
+    expect(new Set(flutterWidgets.map(({ name }) => name)).size).toBe(31);
     expect(
       new Set(flutterWidgets.map(({ previewRoute }) => previewRoute)).size,
-    ).toBe(30);
+    ).toBe(31);
     render(<App path="/flutter/components/" />);
     const navigation = screen.getByRole("navigation", {
       name: "Component list",
@@ -349,6 +442,72 @@ describe("Website editions", () => {
     ).toBeVisible();
     fireEvent.click(screen.getByRole("button", { name: "Go home" }));
     expect(window.location.pathname).toBe("/flutter/");
+  });
+
+  it("documents bottom navigation without linking to a missing React counterpart", () => {
+    window.history.replaceState(
+      null,
+      "",
+      "/flutter/components/WelkBottomNavBar/",
+    );
+    render(<App />);
+    expect(
+      screen.getByRole("heading", { name: "WelkBottomNavBar" }),
+    ).toBeVisible();
+    expect(screen.getByText(/introduced in the/)).toHaveTextContent(
+      "0.1.9 API",
+    );
+    expect(document.querySelector(".flutterDocs pre")).toHaveTextContent(
+      "welkui_flutter: ^0.1.9",
+    );
+    for (const name of [
+      "Five layouts",
+      "Pages, state and nested navigation",
+      "Visibility and scroll behavior",
+      "Safe areas and content insets",
+      "Styling and label behavior",
+    ]) {
+      expect(screen.getByRole("heading", { name })).toBeVisible();
+    }
+    for (const name of [
+      "WelkBottomNavItem",
+      "WelkBottomNavStyle",
+      "WelkBottomNavScaffold",
+      "WelkBottomNavScaffoldState",
+    ]) {
+      expect(
+        screen.getByRole("table", { name: `${name} reference` }),
+      ).toBeVisible();
+    }
+    expect(
+      document.querySelector('a[href="/components/WelkBottomNavBar/"]'),
+    ).toBeNull();
+    expect(
+      screen.getByRole("link", { name: "open the bottom navigation example" }),
+    ).toHaveAttribute(
+      "href",
+      "https://welkdock.github.io/welkUI-flutter/#/bottom-nav",
+    );
+    fireEvent.click(screen.getByRole("button", { name: /Run live preview/ }));
+    expect(document.querySelector("iframe")).toHaveAttribute(
+      "src",
+      "https://welkdock.github.io/welkUI-flutter/#/bottom-nav",
+    );
+  });
+
+  it("pre-renders the bottom navigation guide and includes its SEO route", () => {
+    const path = "/flutter/components/WelkBottomNavBar/";
+    expect(seoRoutes).toContain(path);
+    expect(getSeo(path).indexable).toBe(true);
+    const html = renderToString(<App path={path} />);
+    const page = new DOMParser().parseFromString(html, "text/html");
+    const captions = Array.from(
+      page.querySelectorAll("caption"),
+      (caption) => caption.textContent,
+    );
+    expect(captions).toContain("WelkBottomNavScaffold reference");
+    expect(captions).toContain("WelkBottomNavStyle reference");
+    expect(html).toContain("Launch demo app");
   });
 });
 

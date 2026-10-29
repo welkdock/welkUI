@@ -236,6 +236,85 @@ p {
 .previewGrid h3 {
   min-height: 3rem;
 }
+.projectSpotlight {
+  display: grid;
+  grid-template-columns: minmax(0, 0.6fr) minmax(0, 1.4fr);
+  gap: clamp(1.5rem, 4vw, 4rem);
+  align-items: center;
+  padding: clamp(1.5rem, 4vw, 3rem);
+  margin: 2rem 0 3rem;
+  border: var(--welk-border);
+  border-radius: 22px 10px 26px 12px;
+  box-shadow: var(--welk-shadow);
+  background: #fff3bd;
+}
+
+.projectSpotlightBrand {
+  display: grid;
+  justify-items: center;
+  gap: 1.5rem;
+  padding: 2rem 1rem;
+  text-align: center;
+}
+
+.projectSpotlightBrand img {
+  width: clamp(80px, 12vw, 144px);
+  height: auto;
+  transform: rotate(-8deg);
+}
+
+.projectSpotlightBrand span {
+  padding: 0.6rem 0.8rem;
+  border: var(--welk-border);
+  box-shadow: var(--welk-shadow);
+  background: white;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  transform: rotate(-4deg);
+}
+
+.projectSpotlightCopy {
+  min-width: 0;
+}
+
+.projectSpotlightCopy h2 {
+  margin-bottom: 1rem;
+}
+
+.projectSpotlightLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.8rem 1.2rem;
+  margin-top: 0.5rem;
+  border: var(--welk-border);
+  border-radius: 12px 6px 14px 7px;
+  box-shadow: var(--welk-shadow);
+  background: white;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.projectSpotlightLink:hover {
+  text-decoration: underline;
+}
+
+.projectSpotlightEmail {
+  font-size: 0.875rem;
+}
+
+@media (max-width: 640px) {
+  .projectSpotlight {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0.5rem;
+  }
+
+  .projectSpotlightBrand {
+    padding: 0.5rem;
+  }
+}
+
 .cta {
   text-align: center;
   background: white;
@@ -644,6 +723,76 @@ p {
   background: #fffdf5;
   /* Keeps rounded clipping for the iframe in Safari. */
   isolation: isolate;
+}
+
+.phoneFrameRecording {
+  aspect-ratio: 1170 / 2532;
+}
+
+.phoneFrameRecording video {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  background: #fff;
+}
+
+.flutterRecordings {
+  display: grid;
+  gap: clamp(3rem, 7vw, 6rem);
+  margin-top: 2.5rem;
+}
+
+.flutterRecording {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  align-items: center;
+  gap: clamp(2rem, 6vw, 6rem);
+}
+
+.flutterRecordingDevice {
+  display: grid;
+  justify-items: center;
+  min-width: 0;
+  padding: 0 8px 8px;
+}
+
+.flutterRecordingCopy {
+  min-width: 0;
+  max-width: 480px;
+}
+
+.flutterRecordingCopy h3 {
+  font-size: clamp(1.5rem, 3vw, 2.25rem);
+  line-height: 1.3;
+}
+
+.flutterRecordingCopy > a {
+  display: inline-block;
+  font-weight: 700;
+}
+
+@media (min-width: 761px) {
+  .flutterRecording:nth-child(even) .flutterRecordingDevice {
+    grid-column: 2;
+    grid-row: 1;
+  }
+
+  .flutterRecording:nth-child(even) .flutterRecordingCopy {
+    grid-column: 1;
+    grid-row: 1;
+  }
+}
+
+@media (max-width: 760px) {
+  .flutterRecording {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 1.5rem;
+  }
+
+  .flutterRecordingCopy {
+    max-width: none;
+  }
 }
 
 .phoneStatusBar {

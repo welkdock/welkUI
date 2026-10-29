@@ -8,7 +8,7 @@ export const flutterPreviewUrl = "https://welkdock.github.io/welkUI-flutter/";
 export const flutterPackage = {
   name: "welkui_flutter",
   // Update this when a new version is published to pub.dev.
-  version: "0.1.5",
+  version: "0.1.9",
   url: "https://pub.dev/packages/welkui_flutter",
   dart: "3.13.4",
   flutter: "3.35.0",
@@ -379,6 +379,105 @@ export const flutterWidgets = [
         "String?",
         "null",
         "Accessible label replacing child semantics when supplied.",
+      ],
+    ],
+  },
+  {
+    name: "WelkBottomNavBar",
+    previewRoute: "/bottom-nav",
+    description:
+      "Comic-styled bottom navigation for 2-5 destinations, with five layouts, floating mode and a state-preserving app scaffold.",
+    design: [
+      "Layouts: popCircle (default), blockCenter, popBlock, comicDock and bubbleRail.",
+      "Modes: defaultMode anchors to the bottom; floating adds margins, rounded corners and shadows.",
+      "popCircle, blockCenter and popBlock feature the middle item with 3 or 5 destinations; 2 or 4 render at regular size.",
+      "WelkBottomNavScaffold manages pages, nested navigation, transitions and automatic visibility. The standalone bar only reports taps.",
+    ],
+    code: statefulExample(
+      "BottomNav",
+      "int _index = 0;",
+      `Scaffold(
+      extendBody: true,
+      body: IndexedStack(
+        index: _index,
+        children: const [
+          Center(child: Text('Home')),
+          Center(child: Text('Create')),
+          Center(child: Text('Profile')),
+        ],
+      ),
+      bottomNavigationBar: WelkBottomNavBar(
+        currentIndex: _index,
+        onTap: (index) => setState(() => _index = index),
+        items: const [
+          WelkBottomNavItem(
+            icon: Icon(Icons.home_outlined),
+            activeIcon: Icon(Icons.home),
+            label: 'Home',
+          ),
+          WelkBottomNavItem(icon: Icon(Icons.add), label: 'Create'),
+          WelkBottomNavItem(icon: Icon(Icons.person_outline), label: 'Profile'),
+        ],
+      ),
+    )`,
+    ),
+    notes: [
+      "Available since 0.1.9. Upgrade welkui_flutter if your installed version does not contain these widgets.",
+      "Supply 2-5 destinations and keep currentIndex within the item range. The standalone bar does not build pages or change selection for you.",
+      "Use Scaffold.extendBody: true for pop-out layouts and floating mode. The bar handles the bottom safe area; do not wrap it in another SafeArea.",
+      "Items expose button semantics, selected state and position. semanticLabel defaults to label, so keep labels meaningful even when visually hidden.",
+      "Enter/Space activate focused items; focus rings and hover highlights support desktop/web previews. Touch targets are at least 48 logical pixels tall.",
+      "RTL mirrors layouts and horizontal page transitions. Reduced-motion requests make indicator, visibility and page transitions instant.",
+      "Labels ellipsize on one line and text scaling is capped at 1.3x. Test long translated labels, TalkBack and VoiceOver.",
+    ],
+    parameters: [
+      [
+        "items",
+        "List<WelkBottomNavItem>",
+        "Required",
+        "2-5 destinations. builder is unused by the standalone bar.",
+      ],
+      [
+        "currentIndex",
+        "int",
+        "Required",
+        "Selected destination index, managed by your application.",
+      ],
+      [
+        "onTap",
+        "ValueChanged<int>?",
+        "null",
+        "Receives every tapped index, including the selected destination.",
+      ],
+      [
+        "layout",
+        "WelkBottomNavLayout",
+        "popCircle",
+        "popCircle, blockCenter, popBlock, comicDock or bubbleRail.",
+      ],
+      [
+        "mode",
+        "WelkBottomNavMode",
+        "defaultMode",
+        "Anchored defaultMode or floating.",
+      ],
+      [
+        "style",
+        "WelkBottomNavStyle",
+        "WelkBottomNavStyle()",
+        "Shared colors, sizing, labels and animation configuration.",
+      ],
+      [
+        "semanticLabel",
+        "String",
+        "'Bottom navigation'",
+        "Screen-reader label for the navigation container.",
+      ],
+      [
+        "enableHapticFeedback",
+        "bool",
+        "true",
+        "Selection-click haptic feedback on tap.",
       ],
     ],
   },

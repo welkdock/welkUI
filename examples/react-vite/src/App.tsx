@@ -28,6 +28,7 @@ import { applySeo, getSeo } from "./seo";
 import { editions, getEdition, type Edition } from "./editions";
 import { EditionSwitcher } from "./EditionSwitcher";
 import { FlutterComponents } from "./FlutterComponents";
+import { FlutterRecordings } from "./FlutterRecordings";
 import {
   flutterImport,
   flutterInstall,
@@ -193,54 +194,60 @@ function Home({ edition }: { edition: Edition }) {
             ? "Mobile widgets. A new chapter."
             : "Real components. Ready to play."}
         </h2>
-        <div className="previewGrid">
-          <article className="surface">
-            <WelkBadge>01 / ACTION</WelkBadge>
-            <h3>A button worth pressing</h3>
-            {flutter ? (
-              <p>
-                Tap a comic button in the{" "}
-                <a href="/flutter/components/WelkButton/">
-                  WelkButton live preview
-                </a>
-                .
-              </p>
-            ) : (
+        {flutter ? (
+          <FlutterRecordings />
+        ) : (
+          <div className="previewGrid">
+            <article className="surface">
+              <WelkBadge>01 / ACTION</WelkBadge>
+              <h3>A button worth pressing</h3>
               <ComponentDemo name="WelkButton" />
-            )}
-          </article>
-          <article className="surface">
-            <WelkBadge variant="info">02 / CONTROL</WelkBadge>
-            <h3>Switch things up</h3>
-            {flutter ? (
-              <p>
-                Flip it on and off in the{" "}
-                <a href="/flutter/components/WelkSwitch/">
-                  WelkSwitch live preview
-                </a>
-                .
-              </p>
-            ) : (
+            </article>
+            <article className="surface">
+              <WelkBadge variant="info">02 / CONTROL</WelkBadge>
+              <h3>Switch things up</h3>
               <WelkSwitch label="Hero mode" />
-            )}
-          </article>
-          <article className="surface">
-            <WelkBadge variant="success">03 / DISCOVER</WelkBadge>
-            <h3>A little more to the story</h3>
-            {flutter ? (
-              <p>
-                Tell a story in the{" "}
-                <a href="/flutter/components/WelkCard/">
-                  WelkCard live preview
-                </a>
-                .
-              </p>
-            ) : (
+            </article>
+            <article className="surface">
+              <WelkBadge variant="success">03 / DISCOVER</WelkBadge>
+              <h3>A little more to the story</h3>
               <WelkAccordion title="Open a new chapter">
                 Built with WelkUI, not another UI kit.
               </WelkAccordion>
-            )}
-          </article>
+            </article>
+          </div>
+        )}
+      </section>
+      <section
+        className="projectSpotlight"
+        aria-labelledby="project-spotlight-title"
+      >
+        <div className="projectSpotlightBrand" aria-hidden="true">
+          <img src={welkuiLogo} alt="" width={96} height={96} />
+          <span>YOUR NEXT BIG PANEL</span>
+        </div>
+        <div className="projectSpotlightCopy">
+          <WelkBadge variant="info">BUILT WITH WELKUI. MADE BY YOU.</WelkBadge>
+          <h2 id="project-spotlight-title">
+            Your project deserves the spotlight.
+          </h2>
+          <p>
+            Building something with WelkUI? We&apos;d love to see it. Email us
+            your project for a chance to be featured in the showcase on our
+            official website.
+          </p>
+          <p className="finePrint">
+            Share a link, a few screenshots and a little about what you built.
+            React or Flutter, big idea or side project — every story starts
+            somewhere.
+          </p>
+          <a
+            className="projectSpotlightLink"
+            href={`mailto:contact@welkdock.com?subject=${encodeURIComponent("Built with WelkUI — showcase submission")}`}
+          >
+            Share your project <span aria-hidden="true">→</span>
+          </a>
+          <p className="projectSpotlightEmail">contact@welkdock.com</p>
         </div>
       </section>
       <section className="cta">
