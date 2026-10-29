@@ -2,6 +2,11 @@ import { WelkAccordion, WelkBadge, WelkMenu } from "@welkui/react";
 import { Code } from "./code";
 import { FlutterPreview } from "./FlutterPreview";
 import {
+  FlutterBottomNavGuide,
+  FlutterBottomNavInstall,
+} from "./FlutterBottomNavGuide";
+import { catalogue } from "./catalogue";
+import {
   flutterDarkModeCode,
   flutterDarkModeOverrideCode,
   flutterFontCode,
@@ -64,13 +69,17 @@ export function FlutterComponents({ name }: { name?: string }) {
               aria-labelledby="component-title"
             >
               <h3>Install</h3>
-              <Code
-                key={`install-${widget.name}`}
-                language="Terminal"
-                theme="dracula"
-              >
-                {flutterInstall}
-              </Code>
+              {widget.name === "WelkBottomNavBar" ? (
+                <FlutterBottomNavInstall />
+              ) : (
+                <Code
+                  key={`install-${widget.name}`}
+                  language="Terminal"
+                  theme="dracula"
+                >
+                  {flutterInstall}
+                </Code>
+              )}
               <p className="finePrint">
                 Latest release:{" "}
                 <a href={flutterPackage.url}>
@@ -85,10 +94,12 @@ export function FlutterComponents({ name }: { name?: string }) {
                 language="Dart"
                 theme="dracula"
               >{`${flutterImport}\n\n${widget.code}`}</Code>
-              <p className="finePrint">
-                Same look as the React{" "}
-                <a href={`/components/${widget.name}/`}>{widget.name}</a>.
-              </p>
+              {catalogue.some((item) => item.name === widget.name) && (
+                <p className="finePrint">
+                  Same look as the React{" "}
+                  <a href={`/components/${widget.name}/`}>{widget.name}</a>.
+                </p>
+              )}
               <h3>Variants and behavior</h3>
               <ul className="variantList">
                 {widget.design.map((item) => (
@@ -101,6 +112,7 @@ export function FlutterComponents({ name }: { name?: string }) {
                   <li key={note}>{note}</li>
                 ))}
               </ul>
+              {widget.name === "WelkBottomNavBar" && <FlutterBottomNavGuide />}
               <h3 id="flutter-dark-mode">Dark mode</h3>
               <p>
                 Control all widgets, pickers, and overlays with{" "}
