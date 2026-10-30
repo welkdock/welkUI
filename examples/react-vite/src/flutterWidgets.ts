@@ -8,7 +8,7 @@ export const flutterPreviewUrl = "https://welkdock.github.io/welkUI-flutter/";
 export const flutterPackage = {
   name: "welkui_flutter",
   // Update this when a new version is published to pub.dev.
-  version: "0.1.9",
+  version: "0.2.0",
   url: "https://pub.dev/packages/welkui_flutter",
   dart: "3.13.4",
   flutter: "3.35.0",
@@ -147,6 +147,132 @@ class _${name}ExampleState extends State<${name}Example> {
 }
 
 export const flutterWidgets = [
+  {
+    name: "WelkAppBar",
+    previewRoute: "/app-bar",
+    description:
+      "A comic-inspired toolbar for Scaffold with expressive title layouts, optional branding, inferred navigation controls and a detached floating style.",
+    design: [
+      "Layouts: comicStrip, sticker, bubble and split",
+      "Optional logo with leading-edge or centered placement",
+      "Automatically implies a back or drawer button; supports up to three actions",
+      "Floating card appearance is separate from scroll behavior; use WelkSliverAppBar for pinned or scroll-away layouts",
+    ],
+    code: `Scaffold(
+  appBar: WelkAppBar(
+    title: 'Comic studio',
+    logo: const Icon(Icons.bolt),
+    layout: WelkAppBarLayout.sticker,
+    floating: true,
+    actions: [
+      IconButton(
+        tooltip: 'Search',
+        icon: const Icon(Icons.search),
+        onPressed: () {},
+      ),
+    ],
+  ),
+  body: const Center(child: Text('Your next adventure starts here.')),
+)`,
+    notes: [
+      "Available since 0.2.0.",
+      "Provide either title or titleWidget, but not both. Supply leading to replace the inferred back or drawer button.",
+      "At most three actions are supported. Keep action tooltips meaningful for accessible names.",
+      "floating controls the detached card appearance, not scroll behavior. Use WelkSliverAppBar inside CustomScrollView for pinned or scroll-away behavior.",
+      "Colors inherit from WelkTheme. Set primary: false when using the bar inline without status-bar padding.",
+    ],
+    parameters: [
+      [
+        "title",
+        "String?",
+        "null",
+        "Plain-text title; use instead of titleWidget.",
+      ],
+      ["titleWidget", "Widget?", "null", "Custom title; use instead of title."],
+      ["logo", "Widget?", "null", "Optional brand mark."],
+      [
+        "logoPosition",
+        "WelkAppBarLogoPosition",
+        "left",
+        "Places the logo at the leading edge or centered.",
+      ],
+      ["leading", "Widget?", "null", "Custom leading widget."],
+      [
+        "automaticallyImplyLeading",
+        "bool",
+        "true",
+        "Infers a back button or drawer button when available.",
+      ],
+      [
+        "actions",
+        "List<Widget>",
+        "[]",
+        "Trailing actions; supports up to three.",
+      ],
+      [
+        "layout",
+        "WelkAppBarLayout",
+        "comicStrip",
+        "comicStrip, sticker, bubble or split.",
+      ],
+      [
+        "floating",
+        "bool",
+        "false",
+        "Draws a detached card with margins and a hard shadow.",
+      ],
+      ["centerTitle", "bool", "false", "Centers the title."],
+      ["primary", "bool", "true", "Includes status-bar safe-area padding."],
+      [
+        "height",
+        "double",
+        "72",
+        "Toolbar height, excluding safe-area padding.",
+      ],
+      [
+        "margin",
+        "EdgeInsetsGeometry",
+        "EdgeInsets.fromLTRB(12, 8, 12, 8)",
+        "Outer spacing used by the floating style.",
+      ],
+      [
+        "padding",
+        "EdgeInsetsGeometry",
+        "EdgeInsets.symmetric(horizontal: 8)",
+        "Inner content spacing.",
+      ],
+      [
+        "backgroundColor",
+        "Color?",
+        "null",
+        "Background color; defaults to WelkTheme.",
+      ],
+      [
+        "foregroundColor",
+        "Color?",
+        "null",
+        "Text and icon color; defaults to WelkTheme.",
+      ],
+      ["accentColor", "Color?", "null", "Accent color; defaults to WelkTheme."],
+      [
+        "borderColor",
+        "Color?",
+        "null",
+        "Outline color; defaults to WelkTheme.",
+      ],
+      [
+        "borderWidth",
+        "double?",
+        "null",
+        "Outline width; defaults to WelkTheme.",
+      ],
+      ["borderRadius", "double?", "null", "Corner radius override."],
+      ["shadowColor", "Color?", "null", "Shadow color; defaults to WelkTheme."],
+      ["shadowOffset", "Offset?", "null", "Hard-shadow offset."],
+      ["titleStyle", "TextStyle?", "null", "Title text style override."],
+      ["logoSize", "double", "36", "Logo size."],
+    ],
+  },
   {
     name: "WelkAccordion",
     previewRoute: "/accordion",
