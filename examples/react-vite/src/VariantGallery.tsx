@@ -35,6 +35,7 @@ import {
 import type { ComponentName } from "./catalogue";
 import superman from "../../../assets/images/superman.png";
 import comic from "../../../assets/images/comic_bg_04.jpg";
+import { DataTableDemo } from "./DataTableDemo";
 
 interface Example {
   title: string;
@@ -690,6 +691,52 @@ function examplesFor(name: ComponentName): Example[] {
           ),
         },
       ];
+    case "WelkDataTable":
+      return [
+        {
+          title: "Interactive mission board",
+          description:
+            "Search, sort, select rows, and turn the page. Select-all only affects this page.",
+          configuration: "searchable selectable pageSize={3}",
+          preview: <DataTableDemo />,
+        },
+        {
+          title: "Compact",
+          description:
+            "A display-only table without search, sorting, selection boxes, stripes, or pagination.",
+          configuration:
+            'density="compact" striped={false} pagination={false} searchable={false} sortable={false} selectable={false}',
+          preview: (
+            <DataTableDemo
+              density="compact"
+              striped={false}
+              pagination={false}
+              searchable={false}
+              sortable={false}
+              selectable={false}
+            />
+          ),
+        },
+        {
+          title: "Loading",
+          description: "A loading message replaces rows and disables controls.",
+          configuration: "loading",
+          preview: <DataTableDemo loading />,
+        },
+        {
+          title: "Empty",
+          description:
+            "An empty dataset receives a friendly, customizable message.",
+          configuration:
+            'data={[]} emptyMessage="No missions. Time for a coffee!"',
+          preview: (
+            <DataTableDemo
+              data={[]}
+              emptyMessage="No missions. Time for a coffee!"
+            />
+          ),
+        },
+      ];
     case "WelkDateInput":
     case "WelkDatePicker": {
       const Picker = name === "WelkDateInput" ? WelkDateInput : WelkDatePicker;
@@ -707,6 +754,42 @@ function examplesFor(name: ComponentName): Example[] {
             "Starts on a known date; selecting a day updates the field.",
           configuration: 'defaultValue="2026-10-23"',
           preview: <Picker label="Selected launch" defaultValue="2026-10-23" />,
+        },
+        {
+          title: "Circular marking",
+          description:
+            "One of six uneven red pen circles marks the selection. Today is not highlighted by default.",
+          configuration: 'circularMarking defaultValue="2026-10-23"',
+          preview: (
+            <Picker
+              label="Circle your date"
+              defaultValue="2026-10-23"
+              circularMarking
+            />
+          ),
+        },
+        {
+          title: "Custom marking color",
+          description: "Pass any CSS color to customize the pen circle.",
+          configuration:
+            'circularMarking circularMarkingColor="#2563eb" defaultValue="2026-10-23"',
+          preview: (
+            <Picker
+              label="Blue pen date"
+              defaultValue="2026-10-23"
+              circularMarking
+              circularMarkingColor="#2563eb"
+            />
+          ),
+        },
+        {
+          title: "Today's date",
+          description:
+            "Opt in to a yellow, borderless box on today. Works with or without circular marking.",
+          configuration: "showTodaysDate circularMarking",
+          preview: (
+            <Picker label="Today highlighted" showTodaysDate circularMarking />
+          ),
         },
         {
           title: "Bounded range",

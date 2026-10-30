@@ -42,6 +42,13 @@ export const componentGuides = {
     "Read event.currentTarget.checked in onChange for controlled state. The native value is the form submission value, not the checked boolean.",
     "Indeterminate is a native DOM property set through the forwarded ref; it is not a prop and is independent of checked. Keep a select-all controller synchronized with its child choices.",
   ],
+  WelkDataTable: [
+    "Use a descriptive caption and unique, stable getRowId values. Column accessor values drive search and sorting; cell only changes rendering.",
+    "Sorting cycles ascending, descending, and unsorted. Numeric values sort numerically; provide compare for domain-specific ordering and sortable=false for action columns.",
+    "Select-all affects the current page only. Selection persists across filters and pages; process selected ids in your application and validate permissions before bulk actions.",
+    "All data processing is client-side. Supply a reasonably sized dataset; server-side querying and virtualization are not included. Pagination limits rendered rows, not data processing.",
+    "The table uses native headers and aria-sort. Search, sort buttons, selection, pagination, and horizontal overflow are keyboard accessible. Give custom action buttons descriptive accessible names.",
+  ],
   WelkDateInput: [
     "Use the compact input in forms where a full calendar would take too much space. Use WelkDatePicker when the calendar should remain visible.",
     "Supply valid calendar dates in YYYY-MM-DD for value, defaultValue, min and max. These are date-only strings, not timezone-aware timestamps; avoid converting them through UTC unnecessarily.",

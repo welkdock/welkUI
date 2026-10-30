@@ -59,6 +59,22 @@ const dayLabel = new Intl.DateTimeFormat("en-US", {
   timeZone: "UTC",
 });
 const weekdays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+const circlePaths = [
+  "M37 5C28 1 11 3 5 13C-1 24 7 36 22 37C36 39 46 30 45 18C44 7 32 2 19 4C8 6 2 16 4 25",
+  "M29 4C15 0 3 10 4 22C5 33 17 38 31 35C44 32 47 20 41 11C35 2 18 2 9 10C3 16 3 25 8 30",
+  "M40 11C33 1 17 2 8 9C-1 16 2 30 14 35C27 41 43 32 45 22C47 10 36 3 24 4C13 4 5 12 4 20",
+  "M18 3C6 5 1 16 5 27C9 38 26 38 37 32C48 25 44 10 33 5C21 0 8 7 5 16C2 24 8 33 17 35",
+  "M34 4C22 0 7 6 4 17C0 29 13 38 26 36C40 36 47 24 43 14C39 3 24 1 13 7C5 12 2 21 6 27",
+  "M43 16C41 5 27 1 15 5C3 9 0 22 8 31C16 40 33 37 41 29C49 20 42 7 31 4C20 1 8 8 5 17",
+] as const;
+
+function circlePath(seed: string) {
+  // Stable pseudo-random variation keeps server rendering and hydration in sync.
+  let hash = 0;
+  for (const character of seed)
+    hash = (hash * 31 + character.charCodeAt(0)) >>> 0;
+  return circlePaths[hash % circlePaths.length];
+}
 
 export const DatePickerControl = forwardRef<
   HTMLInputElement,
@@ -75,6 +91,9 @@ export const DatePickerControl = forwardRef<
     max,
     disabled = false,
     required = false,
+    circularMarking = false,
+    circularMarkingColor = "#d62828",
+    showTodaysDate = false,
     className,
     popup = false,
   },
@@ -382,9 +401,29 @@ export const DatePickerControl = forwardRef<
                             if (popup) close();
                           }}
                           onKeyDown={(event) => keyDown(event, date)}
-                          className={styles.day}
+                          className={cn(
+                            styles.day,
+                            circularMarking &&
+                              selected === dateValue &&
+                              styles.circularDay,
+                            showTodaysDate &&
+                              today === dateValue &&
+                              styles.today,
+                          )}
                         >
                           {day}
+                          {circularMarking && selected === dateValue && (
+                            <svg
+                              className={styles.circularMark}
+                              style={{ color: circularMarkingColor }}
+                              viewBox="0 0 48 40"
+                              preserveAspectRatio="none"
+                              aria-hidden="true"
+                              focusable="false"
+                            >
+                              <path d={circlePath(`${inputId}:${dateValue}`)} />
+                            </svg>
+                          )}
                         </button>
                       </td>
                     );

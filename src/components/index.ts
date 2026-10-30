@@ -12,6 +12,7 @@ export * from "./WelkIconButton";
 export * from "./WelkTooltip";
 export * from "./WelkDatePicker";
 export * from "./WelkDateInput";
+export * from "./WelkDataTable";
 export * from "./WelkOTPInput";
 export * from "./WelkDivider";
 export * from "./WelkSticker";

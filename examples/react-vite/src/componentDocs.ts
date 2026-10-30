@@ -64,6 +64,24 @@ const dateProps: readonly Prop[] = [
   ...stringValueProps,
   ["min", "string", "Unset", "Earliest allowed date, in YYYY-MM-DD format."],
   ["max", "string", "Unset", "Latest allowed date, in YYYY-MM-DD format."],
+  [
+    "circularMarking",
+    "boolean",
+    "false",
+    "Marks the selected date with one of six uneven pen circles.",
+  ],
+  [
+    "circularMarkingColor",
+    "CSSProperties['color']",
+    '"#d62828"',
+    "Pen-circle color when circularMarking is enabled. Accepts any CSS color.",
+  ],
+  [
+    "showTodaysDate",
+    "boolean",
+    "false",
+    "Shows a yellow, borderless box on today's date, independently of circularMarking.",
+  ],
   ...formProps,
 ];
 const cardProps: readonly Prop[] = [
@@ -382,11 +400,167 @@ export const componentDocs = {
     props: checkedProps,
     native: `${inputNative} type is fixed to checkbox; size and children are omitted. Native value and defaultValue remain available.`,
   },
+  WelkDataTable: {
+    description:
+      "A typed, comic-inspired data table with client-side sorting, search, pagination, row selection, and custom cells. Native table semantics, bold headers, dashed rules, uneven corners, and hard shadows keep data readable and playful.",
+    variants: [
+      "Comfortable (default) or compact density, with optional alternating stripes.",
+      "Columns sort ascending, descending, then return to original order; set the table's sortable=false to disable all sorting or a column's sortable=false to disable just that column.",
+      "Search and selection are opt-in. Pagination defaults to ten rows per page.",
+      "Loading, empty-data, and no-search-results messages are customizable.",
+    ],
+    props: [
+      ["caption", "ReactNode", "Required", "Visible, accessible table title."],
+      [
+        "data",
+        "readonly T[]",
+        "Required",
+        "Client-side records. Keep row ids stable when records update.",
+      ],
+      [
+        "columns",
+        "readonly WelkDataTableColumn<T>[]",
+        "Required",
+        "Unique id, header, accessor; optional cell, compare, sortable, searchable, align, and width.",
+      ],
+      [
+        "getRowId",
+        "(row: T) => string | number",
+        "Required",
+        "Unique, stable, non-empty row identity. Duplicate ids throw.",
+      ],
+      [
+        "getRowLabel",
+        "(row: T) => string",
+        "Row id",
+        "Accessible row-selection label.",
+      ],
+      [
+        "searchable",
+        "boolean",
+        "false",
+        "Enables text search across column accessor values.",
+      ],
+      [
+        "searchLabel",
+        "string",
+        '"Search table"',
+        "Visible search-field label.",
+      ],
+      [
+        "searchPlaceholder",
+        "string",
+        '"Find your next clue..."',
+        "Search-field hint.",
+      ],
+      [
+        "search / defaultSearch",
+        "string",
+        '""',
+        "Controlled or initial query. Controlled search requires updating it in onSearchChange.",
+      ],
+      [
+        "onSearchChange",
+        "(search: string) => void",
+        "Unset",
+        "Receives search-field changes.",
+      ],
+      [
+        "sortable",
+        "boolean",
+        "true",
+        "Enables sorting table-wide. False hides sort controls and ignores sort/defaultSort; column sortable=false still disables individual columns.",
+      ],
+      [
+        "sort / defaultSort",
+        "WelkDataTableSort | null",
+        "Unsorted",
+        "Sort columnId and asc/desc direction; null clears controlled sorting. defaultSort accepts an initial sort.",
+      ],
+      [
+        "onSortChange",
+        "(sort: WelkDataTableSort | null) => void",
+        "Unset",
+        "Receives requested sorting.",
+      ],
+      [
+        "pagination",
+        "boolean",
+        "true",
+        "Shows client-side page controls; false renders all matching rows.",
+      ],
+      [
+        "pageSize",
+        "number",
+        "10",
+        "Positive integer number of rows per page. Invalid values throw.",
+      ],
+      [
+        "selectable",
+        "boolean",
+        "false",
+        "Adds row checkboxes and select-all for the current page.",
+      ],
+      [
+        "selectedRowIds / defaultSelectedRowIds",
+        "readonly (string | number)[]",
+        "[]",
+        "Controlled or initial selected ids. Selection survives search, sorting, and page changes.",
+      ],
+      [
+        "onSelectionChange",
+        "(ids: (string | number)[]) => void",
+        "Unset",
+        "Receives selected ids from the current dataset, including other pages.",
+      ],
+      [
+        "loading",
+        "boolean",
+        "false",
+        "Replaces rows with loading status and disables table controls.",
+      ],
+      [
+        "loadingMessage",
+        "ReactNode",
+        '"Loading the next chapter..."',
+        "Loading content.",
+      ],
+      [
+        "emptyMessage",
+        "ReactNode",
+        '"No rows yet. The story starts here."',
+        "Content for an empty dataset.",
+      ],
+      [
+        "noResultsMessage",
+        "ReactNode",
+        '"No matching rows. Try another clue."',
+        "Content when search finds no matching records.",
+      ],
+      ["striped", "boolean", "true", "Alternating row backgrounds."],
+      [
+        "density",
+        '"comfortable" | "compact"',
+        '"comfortable"',
+        "Cell spacing.",
+      ],
+      [
+        "getRowClassName",
+        "(row: T) => string | undefined",
+        "Unset",
+        "Additional class on each data row.",
+      ],
+      className,
+    ],
+    native:
+      "Native div attributes are forwarded to the outer panel. Generic T is inferred from data; no ref is exposed. Cells can contain links, badges, or action buttons.",
+  },
   WelkDateInput: {
     description:
       "A compact editable date field that opens the library's custom calendar rather than a browser date popup. It shares the DatePicker API and keyboard/date-selection behavior. Date values and bounds use YYYY-MM-DD; an empty string clears the value.",
     variants: [
       "Compact popup calendar presentation. Use WelkDatePicker for a full visible calendar.",
+      "circularMarking=true uses a hand-drawn circle for the selected date; false keeps the filled highlight.",
     ],
     props: dateProps,
   },
@@ -395,6 +569,7 @@ export const componentDocs = {
       "A full-month custom calendar with month navigation and an editable date field. Select a day or type a date; min and max constrain available dates. Use controlled value/onValueChange or uncontrolled defaultValue. Date strings use YYYY-MM-DD.",
     variants: [
       "Full calendar presentation. Use WelkDateInput for the compact popup version.",
+      "circularMarking=true uses a hand-drawn circle for the selected date; false keeps the filled highlight.",
     ],
     props: dateProps,
   },

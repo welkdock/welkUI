@@ -1,0 +1,134 @@
+.root {
+  min-width: 0;
+  max-width: 100%;
+  border: var(--welk-border);
+  border-radius: 17px 10px 19px 9px / 11px 18px 10px 16px;
+  box-shadow: var(--welk-shadow);
+  background: var(--welk-color-paper);
+  color: var(--welk-color-ink);
+  font-family: var(--welk-font-family);
+  overflow: hidden;
+}
+
+.toolbar,
+.footer {
+  padding: 1rem;
+}
+
+.toolbar {
+  border-bottom: var(--welk-border);
+}
+
+.scroll {
+  overflow-x: auto;
+}
+
+.table {
+  width: 100%;
+  min-width: 30rem;
+  border-collapse: collapse;
+  text-align: left;
+  font: inherit;
+}
+
+.table caption {
+  padding: 1rem;
+  text-align: left;
+  font-size: 1.15rem;
+  font-weight: 700;
+  border-bottom: var(--welk-border);
+}
+
+.table th {
+  background: var(--welk-color-accent);
+  color: var(--welk-color-ink);
+  border-bottom: var(--welk-border);
+  font-weight: 700;
+}
+
+.comfortable .table th,
+.comfortable .table td {
+  padding: 0.85rem 1rem;
+}
+
+.compact .table th,
+.compact .table td {
+  padding: 0.5rem 0.75rem;
+}
+
+.table td {
+  border-bottom: 1px dashed var(--welk-color-ink);
+}
+
+.striped tbody tr:nth-child(even) {
+  background: var(--welk-color-muted);
+}
+
+.table tbody tr[data-selected="true"] {
+  background: #fff3b0;
+}
+
+.sort {
+  padding: 0;
+  min-height: 2rem;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  text-align: inherit;
+  font: inherit;
+  font-weight: inherit;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.sort:hover:not(:disabled) {
+  text-decoration: underline wavy;
+  text-underline-offset: 0.3em;
+}
+
+.sort:disabled {
+  cursor: wait;
+}
+
+.root :focus-visible {
+  outline: 3px solid var(--welk-color-focus);
+  outline-offset: -3px;
+}
+
+.table .selection {
+  width: 2.5rem;
+}
+
+.table .message {
+  padding: 2.5rem 1rem;
+  text-align: center;
+}
+
+.footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  border-top: var(--welk-border);
+  font-size: 0.8rem;
+}
+
+.pagination {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}

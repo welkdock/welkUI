@@ -9,8 +9,186 @@ import {
 import userEvent from "@testing-library/user-event";
 import { describe, expect, it, vi } from "vitest";
 import { WelkDatePicker } from "./WelkDatePicker";
+import styles from "./WelkDatePicker.module.css";
 
 describe("WelkDatePicker", () => {
+  it.each([
+    [undefined, "#d62828"],
+    ["#2563eb", "#2563eb"],
+    ["var(--pen-color)", "var(--pen-color)"],
+  ])(
+    "uses the supplied pen color (%s), defaulting to red",
+    (color, expected) => {
+      render(
+        <WelkDatePicker
+          label="Date"
+          defaultValue="2026-10-22"
+          circularMarking
+          circularMarkingColor={color}
+        />,
+      );
+      expect(
+        screen
+          .getByRole("button", { name: "Thursday, October 22, 2026" })
+          .querySelector("svg"),
+      ).toHaveStyle({ color: expected });
+    },
+  );
+
+  it("uses six uneven circle shapes and keeps each date's shape stable on rerender", () => {
+    const { container, rerender } = render(
+      <WelkDatePicker label="Date" id="shapes" circularMarking />,
+    );
+    const shapes = new Set<string | null>();
+    for (let day = 1; day <= 31; day++) {
+      const value = `2026-10-${String(day).padStart(2, "0")}`;
+      const picker = (
+        <WelkDatePicker
+          label="Date"
+          id="shapes"
+          circularMarking
+          value={value}
+        />
+      );
+      rerender(picker);
+      const path = container.querySelector("svg path")!.getAttribute("d");
+      shapes.add(path);
+      rerender(
+        <WelkDatePicker
+          label="Date"
+          id="shapes"
+          circularMarking
+          value={value}
+        />,
+      );
+      expect(container.querySelector("svg path")).toHaveAttribute("d", path);
+    }
+    expect(shapes.size).toBe(6);
+  });
+
+  it.each([false, true])(
+    "only highlights today when opted in (circularMarking=%s)",
+    (circularMarking) => {
+      vi.useFakeTimers();
+      vi.setSystemTime(new Date(2026, 9, 30, 12));
+      try {
+        const { rerender } = render(
+          <WelkDatePicker
+            label="Date"
+            value="2026-10-22"
+            circularMarking={circularMarking}
+          />,
+        );
+        const today = screen.getByRole("button", {
+          name: "Friday, October 30, 2026",
+        });
+        expect(today).toHaveAttribute("aria-current", "date");
+        expect(today).not.toHaveClass(styles.today);
+        expect(today.querySelector("svg")).toBeNull();
+        rerender(
+          <WelkDatePicker
+            label="Date"
+            value="2026-10-22"
+            circularMarking={circularMarking}
+            showTodaysDate
+          />,
+        );
+        expect(today).toHaveClass(styles.today);
+        rerender(
+          <WelkDatePicker
+            label="Date"
+            value="2026-10-30"
+            circularMarking={circularMarking}
+            showTodaysDate
+          />,
+        );
+        expect(today).toHaveClass(styles.today);
+        expect(today).toHaveAttribute("aria-pressed", "true");
+        expect(today.querySelectorAll("svg")).toHaveLength(
+          circularMarking ? 1 : 0,
+        );
+        rerender(
+          <WelkDatePicker
+            label="Date"
+            value="2026-10-30"
+            circularMarking={circularMarking}
+            showTodaysDate={false}
+          />,
+        );
+        expect(today).not.toHaveClass(styles.today);
+        expect(today).toHaveAttribute("aria-current", "date");
+        expect(today).toHaveAttribute("aria-pressed", "true");
+      } finally {
+        vi.useRealTimers();
+      }
+    },
+  );
+
+  it.each([undefined, false, true])(
+    "only renders a decorative pen circle when circularMarking is true (%s)",
+    (circularMarking) => {
+      const { container } = render(
+        <WelkDatePicker
+          label="Date"
+          defaultValue="2026-10-22"
+          circularMarking={circularMarking}
+        />,
+      );
+      const selected = screen.getByRole("button", {
+        name: "Thursday, October 22, 2026",
+        pressed: true,
+      });
+      expect(container.querySelectorAll("svg")).toHaveLength(
+        circularMarking ? 1 : 0,
+      );
+      if (circularMarking) {
+        expect(selected.querySelector("svg")).toHaveAttribute(
+          "aria-hidden",
+          "true",
+        );
+        expect(selected.querySelector("svg")).toHaveAttribute(
+          "focusable",
+          "false",
+        );
+      }
+    },
+  );
+
+  it("moves the circle with selection and removes it when cleared or turned off", async () => {
+    const user = userEvent.setup();
+    const { container, rerender } = render(
+      <WelkDatePicker label="Date" defaultValue="2026-10-22" circularMarking />,
+    );
+    const original = screen.getByRole("button", {
+      name: "Thursday, October 22, 2026",
+    });
+    const next = screen.getByRole("button", {
+      name: "Friday, October 23, 2026",
+    });
+    await user.click(next);
+    expect(next).toHaveAttribute("aria-pressed", "true");
+    expect(next.querySelector("svg")).toBeInTheDocument();
+    expect(original.querySelector("svg")).toBeNull();
+    fireEvent.change(screen.getByLabelText("Date"), { target: { value: "" } });
+    expect(container.querySelector("svg")).toBeNull();
+    rerender(
+      <WelkDatePicker label="Date" value="2026-10-24" circularMarking />,
+    );
+    expect(
+      screen
+        .getByRole("button", { name: "Saturday, October 24, 2026" })
+        .querySelector("svg"),
+    ).toBeInTheDocument();
+    rerender(
+      <WelkDatePicker
+        label="Date"
+        value="2026-10-24"
+        circularMarking={false}
+      />,
+    );
+    expect(container.querySelector("svg")).toBeNull();
+  });
+
   it("renders all days in a leap month and forwards its input ref and form attributes", () => {
     const ref = createRef<HTMLInputElement>();
     render(

@@ -132,6 +132,8 @@ describe("Website editions", () => {
       "https://www.npmjs.com/package/@welkui/react",
     );
     expect(npmLink.querySelector("img")).toHaveAttribute("width", "36");
+    expect(npmLink).toHaveAttribute("target", "_blank");
+    expect(npmLink).toHaveAttribute("rel", "noopener noreferrer");
     const header = screen.getByRole("banner");
     expect(
       within(header).getByLabelText("Choose edition: React Edition"),
@@ -182,6 +184,12 @@ describe("Website editions", () => {
     expect(
       screen.getByRole("link", { name: "View on pub.dev" }),
     ).toHaveAttribute("href", "https://pub.dev/packages/welkui_flutter");
+    for (const link of screen
+      .getAllByRole("link")
+      .filter((link) => link.getAttribute("href") === flutterPackage.url)) {
+      expect(link).toHaveAttribute("target", "_blank");
+      expect(link).toHaveAttribute("rel", "noopener noreferrer");
+    }
     expect(
       screen.queryByRole("link", { name: "Get it on pub.dev" }),
     ).not.toBeInTheDocument();
@@ -226,6 +234,12 @@ describe("Website editions", () => {
     expect(
       screen.getByRole("link", { name: /welkui_flutter \d/ }),
     ).toHaveAttribute("href", "https://pub.dev/packages/welkui_flutter");
+    expect(
+      screen.getByRole("link", { name: /welkui_flutter \d/ }),
+    ).toHaveAttribute("target", "_blank");
+    expect(
+      screen.getByRole("link", { name: /welkui_flutter \d/ }),
+    ).toHaveAttribute("rel", "noopener noreferrer");
     fireEvent.click(screen.getByRole("button", { name: "FAQ" }));
     expect(window.location.pathname).toBe("/flutter/faq/");
     expect(

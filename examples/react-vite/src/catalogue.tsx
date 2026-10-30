@@ -34,6 +34,7 @@ import {
 import type { WelkDrawerPosition, WelkSnackBarPosition } from "@welkui/react";
 import superman from "../../../assets/images/superman.png";
 import comic from "../../../assets/images/comic_bg_04.jpg";
+import { DataTableDemo } from "./DataTableDemo";
 
 export const catalogue = [
   {
@@ -77,14 +78,37 @@ export const catalogue = [
     code: '<WelkCheckBox label="Keep it playful" defaultChecked />',
   },
   {
+    name: "WelkDataTable",
+    info: "A comic-inspired data table with sorting, search, pagination, selection, and custom cells.",
+    code: `const missions = [
+  { id: "M1", name: "Rescue the moon", points: 90 },
+  { id: "M2", name: "Find the missing ink", points: 40 },
+  { id: "M3", name: "Catch the plot twist", points: 75 },
+];
+
+<WelkDataTable
+  caption="Mission board"
+  data={missions}
+  columns={[
+    { id: "name", header: "Mission", accessor: (row) => row.name },
+    { id: "points", header: "Points", accessor: (row) => row.points, align: "right" },
+  ]}
+  getRowId={(row) => row.id}
+  getRowLabel={(row) => row.name}
+  searchable
+  selectable
+  pageSize={2}
+/>`,
+  },
+  {
     name: "WelkDateInput",
     info: "An editable date field opening our custom calendar. Values use YYYY-MM-DD.",
-    code: '<WelkDateInput label="Launch date" defaultValue="2026-10-23" />',
+    code: '<WelkDateInput label="Launch date" defaultValue="2026-10-23" circularMarking />',
   },
   {
     name: "WelkDatePicker",
     info: "Full-month custom calendar with manual entry and month navigation. Supports min/max.",
-    code: '<WelkDatePicker label="Pick a date" defaultValue="2026-10-23"\n  onValueChange={(date) => console.log(date)} />',
+    code: '<WelkDatePicker label="Pick a date" defaultValue="2026-10-23" circularMarking\n  onValueChange={(date) => console.log(date)} />',
   },
   {
     name: "WelkDialog",
@@ -263,10 +287,24 @@ export function ComponentDemo({ name }: { name: ComponentName }) {
       );
     case "WelkCheckBox":
       return <WelkCheckBox label="Keep it playful" defaultChecked />;
+    case "WelkDataTable":
+      return <DataTableDemo />;
     case "WelkDateInput":
-      return <WelkDateInput label="Launch date" defaultValue="2026-10-23" />;
+      return (
+        <WelkDateInput
+          label="Launch date"
+          defaultValue="2026-10-23"
+          circularMarking
+        />
+      );
     case "WelkDatePicker":
-      return <WelkDatePicker label="Pick a date" defaultValue="2026-10-23" />;
+      return (
+        <WelkDatePicker
+          label="Pick a date"
+          defaultValue="2026-10-23"
+          circularMarking
+        />
+      );
     case "WelkDialog":
       return (
         <>
