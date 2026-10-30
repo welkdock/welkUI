@@ -82,7 +82,11 @@ export function FlutterComponents({ name }: { name?: string }) {
               )}
               <p className="finePrint">
                 Latest release:{" "}
-                <a href={flutterPackage.url}>
+                <a
+                  href={flutterPackage.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
                   {flutterPackage.name} {flutterPackage.version}
                 </a>{" "}
                 on pub.dev. Requires Dart {flutterPackage.dart}+ and Flutter{" "}

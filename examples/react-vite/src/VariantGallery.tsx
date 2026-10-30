@@ -35,6 +35,7 @@ import {
 import type { ComponentName } from "./catalogue";
 import superman from "../../../assets/images/superman.png";
 import comic from "../../../assets/images/comic_bg_04.jpg";
+import { DataTableDemo } from "./DataTableDemo";
 
 interface Example {
   title: string;
@@ -687,6 +688,52 @@ function examplesFor(name: ComponentName): Example[] {
               <WelkCheckBox label="Disabled unchecked" disabled />
               <WelkCheckBox label="Disabled checked" disabled defaultChecked />
             </div>
+          ),
+        },
+      ];
+    case "WelkDataTable":
+      return [
+        {
+          title: "Interactive mission board",
+          description:
+            "Search, sort, select rows, and turn the page. Select-all only affects this page.",
+          configuration: "searchable selectable pageSize={3}",
+          preview: <DataTableDemo />,
+        },
+        {
+          title: "Compact",
+          description:
+            "A display-only table without search, sorting, selection boxes, stripes, or pagination.",
+          configuration:
+            'density="compact" striped={false} pagination={false} searchable={false} sortable={false} selectable={false}',
+          preview: (
+            <DataTableDemo
+              density="compact"
+              striped={false}
+              pagination={false}
+              searchable={false}
+              sortable={false}
+              selectable={false}
+            />
+          ),
+        },
+        {
+          title: "Loading",
+          description: "A loading message replaces rows and disables controls.",
+          configuration: "loading",
+          preview: <DataTableDemo loading />,
+        },
+        {
+          title: "Empty",
+          description:
+            "An empty dataset receives a friendly, customizable message.",
+          configuration:
+            'data={[]} emptyMessage="No missions. Time for a coffee!"',
+          preview: (
+            <DataTableDemo
+              data={[]}
+              emptyMessage="No missions. Time for a coffee!"
+            />
           ),
         },
       ];

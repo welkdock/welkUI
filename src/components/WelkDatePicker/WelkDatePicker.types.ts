@@ -1,4 +1,4 @@
-import type { ReactNode } from "react";
+import type { CSSProperties, ReactNode } from "react";
 
 export interface WelkDatePickerProps {
   label: ReactNode;
@@ -11,5 +11,8 @@ export interface WelkDatePickerProps {
   max?: string;
   disabled?: boolean;
   required?: boolean;
+  circularMarking?: boolean;
+  circularMarkingColor?: CSSProperties["color"];
+  showTodaysDate?: boolean;
   className?: string;
 }

@@ -34,6 +34,7 @@ import {
 import type { WelkDrawerPosition, WelkSnackBarPosition } from "@welkui/react";
 import superman from "../../../assets/images/superman.png";
 import comic from "../../../assets/images/comic_bg_04.jpg";
+import { DataTableDemo } from "./DataTableDemo";
 
 export const catalogue = [
   {
@@ -75,6 +76,29 @@ export const catalogue = [
     name: "WelkCheckBox",
     info: "A native checkbox with a visible label. Use checked/onChange or defaultChecked.",
     code: '<WelkCheckBox label="Keep it playful" defaultChecked />',
+  },
+  {
+    name: "WelkDataTable",
+    info: "A comic-inspired data table with sorting, search, pagination, selection, and custom cells.",
+    code: `const missions = [
+  { id: "M1", name: "Rescue the moon", points: 90 },
+  { id: "M2", name: "Find the missing ink", points: 40 },
+  { id: "M3", name: "Catch the plot twist", points: 75 },
+];
+
+<WelkDataTable
+  caption="Mission board"
+  data={missions}
+  columns={[
+    { id: "name", header: "Mission", accessor: (row) => row.name },
+    { id: "points", header: "Points", accessor: (row) => row.points, align: "right" },
+  ]}
+  getRowId={(row) => row.id}
+  getRowLabel={(row) => row.name}
+  searchable
+  selectable
+  pageSize={2}
+/>`,
   },
   {
     name: "WelkDateInput",
@@ -263,6 +287,8 @@ export function ComponentDemo({ name }: { name: ComponentName }) {
       );
     case "WelkCheckBox":
       return <WelkCheckBox label="Keep it playful" defaultChecked />;
+    case "WelkDataTable":
+      return <DataTableDemo />;
     case "WelkDateInput":
       return (
         <WelkDateInput

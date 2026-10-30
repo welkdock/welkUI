@@ -6,6 +6,164 @@ component. For live previews, every variant and copy-ready snippets, open the
 
 [← Back to README](../README.md)
 
+## Data display
+
+### WelkDataTable
+
+A native, accessible table with bold comic headers, dashed row separators,
+asymmetric corners, solid offset shadows, and the bundled Short Stack font.
+Column and row types are inferred from your dataset.
+
+```tsx
+import { WelkBadge, WelkDataTable } from "@welkui/react";
+import type { WelkDataTableColumn } from "@welkui/react";
+
+interface Mission {
+  id: string;
+  name: string;
+  points: number;
+}
+
+const missions: Mission[] = [
+  { id: "M1", name: "Rescue the moon", points: 90 },
+  { id: "M2", name: "Find the missing ink", points: 40 },
+  { id: "M3", name: "Catch the plot twist", points: 75 },
+];
+
+const columns: WelkDataTableColumn<Mission>[] = [
+  { id: "name", header: "Mission", accessor: (row) => row.name },
+  {
+    id: "points",
+    header: "Points",
+    accessor: (row) => row.points,
+    cell: (row) => <WelkBadge>{row.points} pts</WelkBadge>,
+    align: "right",
+  },
+];
+
+<WelkDataTable
+  caption="Mission board"
+  data={missions}
+  columns={columns}
+  getRowId={(row) => row.id}
+  getRowLabel={(row) => row.name}
+  searchable
+  selectable
+  pageSize={2}
+/>;
+```
+
+#### Columns and customization
+
+Each column requires a unique, non-empty `id`, a `header: ReactNode`, and an
+`accessor: (row: T) => string | number | boolean | null | undefined`. Accessor
+values drive search, sort, and default cell rendering. `null`/`undefined` render
+as empty text. Use `cell: (row: T) => ReactNode` for links, badges, formatted
+values, or action buttons; it does not change the search/sort value.
+
+Optional column properties:
+
+- `sortable` and `searchable` default to `true`. Disable them for action columns
+  or content that should not participate in search.
+- `compare: (a: T, b: T) => number` supplies a custom ascending comparator.
+  Numbers otherwise sort numerically; other values use English,
+  case-insensitive natural ordering. Nullish values sort last ascending and first
+  descending. Sorting is stable and never mutates the source array.
+- `align: "left" | "center" | "right"` aligns header and cell content.
+- `width: CSSProperties["width"]` sets a preferred column width.
+
+`density` is `"comfortable"` (default) or `"compact"`. `striped` defaults to
+`true`; set it to `false` for plain paper rows. `className`, native div attributes,
+and `style` target the outer panel. `getRowClassName(row)` styles individual data
+rows. Theme colors, typography, outlines, and shadows use the shared CSS tokens.
+Wide content scrolls horizontally in a keyboard-focusable region.
+
+#### Sorting, search and pagination
+
+Enable or disable table features independently:
+
+```tsx
+<WelkDataTable
+  caption="Mission board"
+  data={missions}
+  columns={columns}
+  getRowId={(row) => row.id}
+  searchable={false}
+  sortable={false}
+  selectable={false}
+/>
+```
+
+`searchable` (default `false`) controls the search field and filtering.
+`sortable` (default `true`) controls all sorting buttons and data sorting.
+`selectable` (default `false`) controls row and select-all checkboxes.
+When `sortable={false}`, `sort` and `defaultSort` are ignored, and headers have
+no sort indicators. Re-enabling sorting restores the supplied or previous sort.
+Per-column `sortable={false}` continues to opt individual columns out when
+table-wide sorting is enabled.
+
+Sortable header buttons cycle ascending, descending, then unsorted, updating
+`aria-sort`. Use `defaultSort={{ columnId: "points", direction: "desc" }}` for
+initial ordering, or `sort` and `onSortChange` to control it. Set controlled
+`sort={null}` to restore dataset order. The sort must reference a sortable column.
+
+`searchable` defaults to `false`. When enabled, a visible `"Search table"` field
+matches text across searchable accessor values, ignoring case and trimming the
+query. Customize `searchLabel` and `searchPlaceholder`, initialize with
+`defaultSearch`, or control with `search` and `onSearchChange`. Controlled values
+must be updated by the consumer after callbacks.
+
+`pagination` defaults to `true`, with `pageSize={10}`. A positive integer page
+size is required. Search and sort changes return to the first page; data
+shrinkage clamps the current page. Set `pagination={false}` to render all
+matching rows. Filtering and sorting happen before pagination.
+Previous/next controls are backward/forward icon buttons with accessible labels.
+
+#### Row selection
+
+`selectable` defaults to `false`. `getRowId` must return a unique, stable,
+non-empty string or finite number. Keep ids consistent across data updates.
+`getRowLabel` customizes accessible checkbox names; it defaults to the row id.
+The header checkbox selects/deselects only the visible page and shows a mixed
+state for partial selection. Selection is preserved across pages, sorting, and
+search. Selected rows have a light-yellow background. Removed dataset ids are excluded from the selection count and subsequent
+callbacks.
+
+Initialize with `defaultSelectedRowIds`, or control selection with
+`selectedRowIds` and `onSelectionChange`. The callback receives the selected ids
+from the entire current dataset, not just the visible page:
+
+```tsx
+const [selected, setSelected] = useState<(string | number)[]>([]);
+
+<WelkDataTable
+  caption="Mission board"
+  data={missions}
+  columns={columns}
+  getRowId={(row) => row.id}
+  selectable
+  selectedRowIds={selected}
+  onSelectionChange={setSelected}
+/>;
+```
+
+#### Loading and empty states
+
+`loading` replaces rows with a status message and disables search, sorting,
+selection, and pagination controls. Customize `loadingMessage` (default
+`"Loading the next chapter..."`), `emptyMessage` for an empty dataset (default
+`"No rows yet. The story starts here."`), and `noResultsMessage` for unmatched
+searches (default `"No matching rows. Try another clue."`). All accept
+`ReactNode`. Async errors and fetching belong to the application; do not disguise
+errors as empty data.
+
+The component uses native table, caption, column headers, checkboxes, and buttons,
+not an ARIA grid. Tab/Enter/Space operate controls; custom cells should retain
+their native keyboard behavior. The generic component does not expose a ref.
+All processing is client-side: supply the complete, reasonably sized dataset.
+Server-side data controls, column resizing/reordering, and virtualization are
+not part of this component.
+
 ## Navigation, overlays and feedback
 
 ### Menu / navbar
@@ -417,6 +575,9 @@ the calendar and returns focus to the field. Escape, outside clicks, and moving
 focus outside dismiss it. ArrowDown from the field moves focus to the selected
 day (or today, bounded by limits). It supports the same values, limits, manual
 `YYYY-MM-DD` editing, validation, refs and form behavior as `WelkDatePicker`.
+Pass `circularMarking` to mark the selected day with a hand-drawn pen circle in
+the popup calendar. It defaults to `false`, preserving the filled highlight.
+The circle defaults to red; use `circularMarkingColor` to customize its CSS color.
 The dropdown is positioned below the input; allow room and avoid clipping
 ancestors with `overflow: hidden`.
 
@@ -435,6 +596,7 @@ import { WelkDatePicker } from "@welkui/react";
   name="adventureDate"
   min="2026-01-01"
   max="2026-12-31"
+  circularMarking
   onValueChange={(date) => console.log(date)}
 />;
 ```
@@ -442,7 +604,24 @@ import { WelkDatePicker } from "@welkui/react";
 Use `defaultValue` for uncontrolled state or `value` and `onValueChange` for
 controlled state. Values and limits use `YYYY-MM-DD`; `""` clears the value.
 Invalid date props or reversed limits throw a `RangeError`. Month navigation does
-not change the selected date. The selected day is highlighted; today is outlined.
+not change the selected date. The selected day is highlighted; today has no
+special visual marking by default.
+Set `circularMarking={true}` (or simply `circularMarking`) to replace the selected
+day's filled highlight and shadow with a hand-drawn pen circle. Omit it or set
+`circularMarking={false}` to keep the default highlight. This only changes the
+selection's appearance; keyboard focus, date selection, and disabled states
+remain unchanged. The same prop is available on `WelkDateInput`.
+
+Circles use one of six uneven pen shapes, chosen per date and component and kept
+stable across renders. The default color is red (`#d62828`); pass
+`circularMarkingColor="#2563eb"` (or any CSS color, including a CSS variable) to
+override it. The color prop only applies when `circularMarking` is enabled.
+Set `showTodaysDate={true}` (or simply `showTodaysDate`) to give today a yellow,
+borderless boxed highlight. It defaults to `false` and works independently of
+`circularMarking` on both date components. If today is also selected with circular
+marking enabled, its pen circle appears over the yellow highlight. This option
+does not change selection or keyboard behavior; today retains its accessible
+`aria-current="date"` identification even without visual highlighting.
 The top field accepts `YYYY-MM-DD` text and participates in form submission and
 `required` validation. Invalid or partial entries stay editable, show an error,
 and block form submission using custom validity without changing the selected

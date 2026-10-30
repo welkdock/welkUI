@@ -76,6 +76,8 @@ function Home({ edition }: { edition: Edition }) {
               <a
                 className="githubLink"
                 href="https://www.npmjs.com/package/@welkui/react"
+                target="_blank"
+                rel="noopener noreferrer"
               >
                 <img src={npmLogo} alt="" width={36} height={14} />
                 Get it on npm
@@ -117,13 +119,22 @@ function Home({ edition }: { edition: Edition }) {
             <p className="eyebrow">GET IT ON PUB.DEV</p>
             <h2 id="install-title">Add it to your app in one line.</h2>
             <p>
-              <a href={flutterPackage.url}>
+              <a
+                href={flutterPackage.url}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 {flutterPackage.name} {flutterPackage.version}
               </a>{" "}
               is live on pub.dev. Requires Dart {flutterPackage.dart}+ and
               Flutter {flutterPackage.flutter}+.
             </p>
-            <a className="githubLink" href={flutterPackage.url}>
+            <a
+              className="githubLink"
+              href={flutterPackage.url}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               <img src={icon} alt="" width={24} height={24} />
               View on pub.dev
             </a>
@@ -211,7 +222,7 @@ function Home({ edition }: { edition: Edition }) {
             <article className="surface">
               <WelkBadge variant="success">03 / DISCOVER</WelkBadge>
               <h3>A little more to the story</h3>
-              <WelkAccordion title="Open a new chapter">
+              <WelkAccordion title="Open a new chapter" fixedWidth="100%">
                 Built with WelkUI, not another UI kit.
               </WelkAccordion>
             </article>

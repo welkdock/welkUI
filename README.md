@@ -28,6 +28,9 @@
 | **Overlays & feedback** | [WelkDialog](https://ui.welkdock.com/components/WelkDialog/), [WelkDrawer](https://ui.welkdock.com/components/WelkDrawer/), [WelkSnackBar](https://ui.welkdock.com/components/WelkSnackBar/), [WelkTooltip](https://ui.welkdock.com/components/WelkTooltip/)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
 | **Display**             | [WelkAccordion](https://ui.welkdock.com/components/WelkAccordion/), [WelkAvatar](https://ui.welkdock.com/components/WelkAvatar/), [WelkBadge](https://ui.welkdock.com/components/WelkBadge/), [WelkCard](https://ui.welkdock.com/components/WelkCard/), [WelkDivider](https://ui.welkdock.com/components/WelkDivider/), [WelkImage](https://ui.welkdock.com/components/WelkImage/), [WelkQRCode](https://ui.welkdock.com/components/WelkQRCode/), [WelkSticker](https://ui.welkdock.com/components/WelkSticker/), [WelkStickerCard](https://ui.welkdock.com/components/WelkStickerCard/)                                                                                                                                                                                                                                       |
 
+For sortable, searchable records with pagination and row selection, see
+[WelkDataTable](https://ui.welkdock.com/components/WelkDataTable/).
+
 ## Installation
 
 ```bash

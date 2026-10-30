@@ -3,8 +3,68 @@ import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, expect, it, vi } from "vitest";
 import { WelkDateInput } from "./WelkDateInput";
+import styles from "../WelkDatePicker/WelkDatePicker.module.css";
 
 describe("WelkDateInput", () => {
+  it("forwards showTodaysDate to the popup without requiring circular marking", () => {
+    const { container, rerender } = render(<WelkDateInput label="Date" />);
+    fireEvent.click(screen.getByRole("combobox"));
+    const today = container.querySelector('[aria-current="date"]');
+    expect(today).toBeInTheDocument();
+    expect(today).not.toHaveClass(styles.today);
+    rerender(<WelkDateInput label="Date" showTodaysDate />);
+    expect(today).toHaveClass(styles.today);
+    rerender(<WelkDateInput label="Date" showTodaysDate={false} />);
+    expect(today).not.toHaveClass(styles.today);
+  });
+
+  it("forwards circularMarking to the popup and preserves selection and focus behavior", async () => {
+    const user = userEvent.setup();
+    render(
+      <WelkDateInput
+        label="Date"
+        defaultValue="2026-10-22"
+        circularMarking
+        circularMarkingColor="#2563eb"
+      />,
+    );
+    const input = screen.getByRole("combobox", { name: "Date" });
+    await user.click(input);
+    expect(
+      screen
+        .getByRole("button", {
+          name: "Thursday, October 22, 2026",
+          pressed: true,
+        })
+        .querySelector("svg"),
+    ).toHaveAttribute("aria-hidden", "true");
+    expect(
+      screen
+        .getByRole("button", { name: "Thursday, October 22, 2026" })
+        .querySelector("svg"),
+    ).toHaveStyle({ color: "#2563eb" });
+    await user.click(
+      screen.getByRole("button", { name: "Friday, October 23, 2026" }),
+    );
+    expect(input).toHaveValue("2026-10-23");
+    expect(input).toHaveFocus();
+    expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
+    await user.click(input);
+    expect(
+      screen
+        .getByRole("button", {
+          name: "Friday, October 23, 2026",
+          pressed: true,
+        })
+        .querySelector("svg"),
+    ).toBeInTheDocument();
+    expect(
+      screen
+        .getByRole("button", { name: "Thursday, October 22, 2026" })
+        .querySelector("svg"),
+    ).toBeNull();
+  });
+
   it("starts closed and opens the custom calendar from the field or icon", async () => {
     const user = userEvent.setup();
     const ref = createRef<HTMLInputElement>();

@@ -10,6 +10,11 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 export const Default: Story = {};
+export const CircularMarking: Story = { args: { circularMarking: true } };
+export const TodaysDate: Story = { args: { showTodaysDate: true } };
+export const CustomMarkingColor: Story = {
+  args: { circularMarking: true, circularMarkingColor: "#2563eb" },
+};
 export const Empty: Story = { args: { defaultValue: "", required: true } };
 export const LimitedRange: Story = {
   args: { min: "2026-10-10", max: "2026-10-28" },

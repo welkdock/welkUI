@@ -62,6 +62,7 @@ for (const name of [
   "WelkTooltip",
   "WelkDatePicker",
   "WelkDateInput",
+  "WelkDataTable",
   "WelkOTPInput",
   "WelkDivider",
   "WelkSticker",
@@ -147,6 +148,7 @@ assert.ok(!consumerCode.includes("WelkIconButton"));
 assert.ok(!consumerCode.includes("WelkTooltip"));
 assert.ok(!consumerCode.includes("WelkDatePicker"));
 assert.ok(!consumerCode.includes("WelkDateInput"));
+assert.ok(!consumerCode.includes("WelkDataTable"));
 assert.ok(!consumerCode.includes("WelkOTPInput"));
 assert.ok(!consumerCode.includes("WelkDivider"));
 assert.ok(!consumerCode.includes("WelkSticker"));
