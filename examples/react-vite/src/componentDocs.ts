@@ -64,6 +64,24 @@ const dateProps: readonly Prop[] = [
   ...stringValueProps,
   ["min", "string", "Unset", "Earliest allowed date, in YYYY-MM-DD format."],
   ["max", "string", "Unset", "Latest allowed date, in YYYY-MM-DD format."],
+  [
+    "circularMarking",
+    "boolean",
+    "false",
+    "Marks the selected date with one of six uneven pen circles.",
+  ],
+  [
+    "circularMarkingColor",
+    "CSSProperties['color']",
+    '"#d62828"',
+    "Pen-circle color when circularMarking is enabled. Accepts any CSS color.",
+  ],
+  [
+    "showTodaysDate",
+    "boolean",
+    "false",
+    "Shows a yellow, borderless box on today's date, independently of circularMarking.",
+  ],
   ...formProps,
 ];
 const cardProps: readonly Prop[] = [
@@ -387,6 +405,7 @@ export const componentDocs = {
       "A compact editable date field that opens the library's custom calendar rather than a browser date popup. It shares the DatePicker API and keyboard/date-selection behavior. Date values and bounds use YYYY-MM-DD; an empty string clears the value.",
     variants: [
       "Compact popup calendar presentation. Use WelkDatePicker for a full visible calendar.",
+      "circularMarking=true uses a hand-drawn circle for the selected date; false keeps the filled highlight.",
     ],
     props: dateProps,
   },
@@ -395,6 +414,7 @@ export const componentDocs = {
       "A full-month custom calendar with month navigation and an editable date field. Select a day or type a date; min and max constrain available dates. Use controlled value/onValueChange or uncontrolled defaultValue. Date strings use YYYY-MM-DD.",
     variants: [
       "Full calendar presentation. Use WelkDateInput for the compact popup version.",
+      "circularMarking=true uses a hand-drawn circle for the selected date; false keeps the filled highlight.",
     ],
     props: dateProps,
   },

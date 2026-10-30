@@ -79,12 +79,12 @@ export const catalogue = [
   {
     name: "WelkDateInput",
     info: "An editable date field opening our custom calendar. Values use YYYY-MM-DD.",
-    code: '<WelkDateInput label="Launch date" defaultValue="2026-10-23" />',
+    code: '<WelkDateInput label="Launch date" defaultValue="2026-10-23" circularMarking />',
   },
   {
     name: "WelkDatePicker",
     info: "Full-month custom calendar with manual entry and month navigation. Supports min/max.",
-    code: '<WelkDatePicker label="Pick a date" defaultValue="2026-10-23"\n  onValueChange={(date) => console.log(date)} />',
+    code: '<WelkDatePicker label="Pick a date" defaultValue="2026-10-23" circularMarking\n  onValueChange={(date) => console.log(date)} />',
   },
   {
     name: "WelkDialog",
@@ -264,9 +264,21 @@ export function ComponentDemo({ name }: { name: ComponentName }) {
     case "WelkCheckBox":
       return <WelkCheckBox label="Keep it playful" defaultChecked />;
     case "WelkDateInput":
-      return <WelkDateInput label="Launch date" defaultValue="2026-10-23" />;
+      return (
+        <WelkDateInput
+          label="Launch date"
+          defaultValue="2026-10-23"
+          circularMarking
+        />
+      );
     case "WelkDatePicker":
-      return <WelkDatePicker label="Pick a date" defaultValue="2026-10-23" />;
+      return (
+        <WelkDatePicker
+          label="Pick a date"
+          defaultValue="2026-10-23"
+          circularMarking
+        />
+      );
     case "WelkDialog":
       return (
         <>

@@ -709,6 +709,42 @@ function examplesFor(name: ComponentName): Example[] {
           preview: <Picker label="Selected launch" defaultValue="2026-10-23" />,
         },
         {
+          title: "Circular marking",
+          description:
+            "One of six uneven red pen circles marks the selection. Today is not highlighted by default.",
+          configuration: 'circularMarking defaultValue="2026-10-23"',
+          preview: (
+            <Picker
+              label="Circle your date"
+              defaultValue="2026-10-23"
+              circularMarking
+            />
+          ),
+        },
+        {
+          title: "Custom marking color",
+          description: "Pass any CSS color to customize the pen circle.",
+          configuration:
+            'circularMarking circularMarkingColor="#2563eb" defaultValue="2026-10-23"',
+          preview: (
+            <Picker
+              label="Blue pen date"
+              defaultValue="2026-10-23"
+              circularMarking
+              circularMarkingColor="#2563eb"
+            />
+          ),
+        },
+        {
+          title: "Today's date",
+          description:
+            "Opt in to a yellow, borderless box on today. Works with or without circular marking.",
+          configuration: "showTodaysDate circularMarking",
+          preview: (
+            <Picker label="Today highlighted" showTodaysDate circularMarking />
+          ),
+        },
+        {
           title: "Bounded range",
           description:
             "Only October 20-28, 2026 can be selected. Navigate the calendar to inspect disabled days.",
