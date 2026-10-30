@@ -70,6 +70,22 @@ export function Example() {
 For Next.js App Router, import the stylesheet in your root layout and keep state
 and event handlers in Client Components.
 
+## Flutter
+
+WelkUI also includes [WelkUI Flutter](https://ui.welkdock.com/flutter), a
+comic-inspired widget library for Android and iOS. The
+[`welkui_flutter` package](https://pub.dev/packages/welkui_flutter) is at
+version **0.2.0** on pub.dev and includes widgets such as `WelkAppBar`.
+
+Install it with:
+
+```bash
+flutter pub add welkui_flutter
+```
+
+Browse the [Flutter widget documentation](https://ui.welkdock.com/flutter),
+including the [WelkAppBar guide](https://ui.welkdock.com/flutter/components/WelkAppBar/).
+
 ## Theming
 
 Override the CSS variables after importing the stylesheet:

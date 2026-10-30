@@ -358,7 +358,7 @@ export function FlutterBottomNavInstall() {
       <Code language="YAML" theme="dracula">{`dependencies:
   flutter:
     sdk: flutter
-  welkui_flutter: ^0.1.9`}</Code>
+  welkui_flutter: ^0.2.0`}</Code>
       <p>No React package or stylesheet is needed.</p>
     </>
   );

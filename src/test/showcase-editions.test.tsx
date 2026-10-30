@@ -376,12 +376,13 @@ describe("Website editions", () => {
     expect(getSeo("/flutter/components/WelkModal/").indexable).toBe(false);
   });
 
-  it("lists all 31 widget destinations with unique preview routes", () => {
-    expect(flutterWidgets).toHaveLength(31);
-    expect(new Set(flutterWidgets.map(({ name }) => name)).size).toBe(31);
+  it("lists all 32 widget destinations with unique preview routes", () => {
+    expect(flutterPackage.version).toBe("0.2.0");
+    expect(flutterWidgets).toHaveLength(32);
+    expect(new Set(flutterWidgets.map(({ name }) => name)).size).toBe(32);
     expect(
       new Set(flutterWidgets.map(({ previewRoute }) => previewRoute)).size,
-    ).toBe(31);
+    ).toBe(32);
     render(<App path="/flutter/components/" />);
     const navigation = screen.getByRole("navigation", {
       name: "Component list",
@@ -472,7 +473,7 @@ describe("Website editions", () => {
       "0.1.9 API",
     );
     expect(document.querySelector(".flutterDocs pre")).toHaveTextContent(
-      "welkui_flutter: ^0.1.9",
+      "welkui_flutter: ^0.2.0",
     );
     for (const name of [
       "Five layouts",
